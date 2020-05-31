@@ -36,8 +36,6 @@ import ins.core.web.AbstractController;
 @Controller
 @RequestMapping("about")
 public class AboutController extends AbstractController {
-        
-    private static final Logger LOGGER = LoggerFactory.getLogger(AboutController.class);
     
     @Autowired
     @Qualifier("AboutPostService")
