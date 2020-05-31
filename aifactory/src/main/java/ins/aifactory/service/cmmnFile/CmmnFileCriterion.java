@@ -4,14 +4,13 @@ import ins.core.entity.EntityCriterion;
 
 public class CmmnFileCriterion extends EntityCriterion {
 
-    private String atchFileId;
+	private String atchFileId;
 
-    public String getAtchFileId() {
-        return atchFileId;
-    }
+	public String getAtchFileId() {
+		return atchFileId;
+	}
 
-    public void setAtchFileId(String atchFileId) {
-        this.atchFileId = atchFileId;
-    }
-
+	public void setAtchFileId(String atchFileId) {
+		this.atchFileId = atchFileId;
+	}
 }

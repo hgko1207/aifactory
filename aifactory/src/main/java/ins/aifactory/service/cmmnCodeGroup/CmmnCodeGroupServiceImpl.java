@@ -26,5 +26,4 @@ public class CmmnCodeGroupServiceImpl extends InsBaseServiceImpl<CmmnCodeGroup, 
     public CmmnCodeGroupServiceImpl() {
         super(CmmnCodeGroup.class);
     }
-
 }

@@ -3,25 +3,25 @@ package ins.aifactory.service.cmmnFileDetail;
 import ins.core.entity.EntityCriterion;
 
 public class CmmnFileDetailCriterion extends EntityCriterion {
-    
-    private String atchFileId;
 
-    private Integer fileSn;
+	private String atchFileId;
 
-    public String getAtchFileId() {
-        return atchFileId;
-    }
+	private Integer fileSn;
 
-    public void setAtchFileId(String atchFileId) {
-        this.atchFileId = atchFileId;
-    }
+	public String getAtchFileId() {
+		return atchFileId;
+	}
 
-    public Integer getFileSn() {
-        return fileSn;
-    }
+	public void setAtchFileId(String atchFileId) {
+		this.atchFileId = atchFileId;
+	}
 
-    public void setFileSn(Integer fileSn) {
-        this.fileSn = fileSn;
-    }
-    
+	public Integer getFileSn() {
+		return fileSn;
+	}
+
+	public void setFileSn(Integer fileSn) {
+		this.fileSn = fileSn;
+	}
+
 }

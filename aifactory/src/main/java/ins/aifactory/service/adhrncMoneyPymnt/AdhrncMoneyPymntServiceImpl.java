@@ -23,16 +23,17 @@ import ins.core.service.InsBaseServiceImpl;
  * </pre>
  */
 @Service("AdhrncMoneyPymntService")
-public class AdhrncMoneyPymntServiceImpl extends InsBaseServiceImpl<AdhrncMoneyPymnt, AdhrncMoneyPymntCriterion> implements AdhrncMoneyPymntService{
-    
-    public AdhrncMoneyPymntServiceImpl() {
-        super(AdhrncMoneyPymnt.class);
-    }
-    
-    @Override
-    public List<AdhrncMoneyPymnt> listStatus(AdhrncMoneyPymntCriterion criterion) {
-        criterion.getPagingInfo().setPaging(false);
-        return dao.selectList(domainClass.getName() + ".listStatus", criterion);
-    }
+public class AdhrncMoneyPymntServiceImpl extends InsBaseServiceImpl<AdhrncMoneyPymnt, AdhrncMoneyPymntCriterion>
+		implements AdhrncMoneyPymntService {
+
+	public AdhrncMoneyPymntServiceImpl() {
+		super(AdhrncMoneyPymnt.class);
+	}
+
+	@Override
+	public List<AdhrncMoneyPymnt> listStatus(AdhrncMoneyPymntCriterion criterion) {
+		criterion.getPagingInfo().setPaging(false);
+		return dao.selectList(domainClass.getName() + ".listStatus", criterion);
+	}
 
 }

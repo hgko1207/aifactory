@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.aspectj.weaver.ast.Call;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,6 @@ import ins.core.web.AbstractController;
 @RequestMapping("lapAdhrnc")
 public class LapAdhrncController extends AbstractController{
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(LapAdhrncController.class);
     private static final Logger PY_LOGGER = LoggerFactory.getLogger("python");
     
     @Autowired
@@ -57,8 +55,8 @@ public class LapAdhrncController extends AbstractController{
         List<Lap> lapList = lapService.list(lapCriterion);
         
         // 현재 진행중인 Lap가 없으면 오류 반환
-        if(lapList.size() > 0){
-            entity.setLap(lapList.get(0));
+		if (lapList.size() > 0) {
+			entity.setLap(lapList.get(0));
             
             Task task = entity.getLap().getTask();
             task = taskService.detail(task);
@@ -91,14 +89,15 @@ public class LapAdhrncController extends AbstractController{
             this.lapAdhrncService.insert(entity);
             
             cmd[8] = entity.getAdhrncSn()+"";
-            cmd[9] = "0001";
-            callShell(cmd);
-        }else{
-            throw new ActiveLapNoExistException();
-        }
+			cmd[9] = "0001";
+			callShell(cmd);
+		} else {
+			throw new ActiveLapNoExistException();
+		}
         
         return "jsonView";
     }
+    
     private void callShell(String[] cmd){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(new Runnable() {
@@ -134,6 +133,7 @@ public class LapAdhrncController extends AbstractController{
             }
         });
     }
+    
     private void callPython(String[] cmd){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(new Runnable() {

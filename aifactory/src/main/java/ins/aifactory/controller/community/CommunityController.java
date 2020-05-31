@@ -5,8 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -20,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
-import ins.aifactory.service.community.Post;
-import ins.aifactory.service.community.PostCriterion;
 import ins.aifactory.service.cmmnFile.CmmnFile;
 import ins.aifactory.service.cmmnFile.CmmnFileService;
+import ins.aifactory.service.community.Post;
+import ins.aifactory.service.community.PostCriterion;
 import ins.aifactory.service.community.PostService;
 import ins.core.entity.EntityPage;
 import ins.core.entity.LoginInfo;
@@ -34,8 +32,6 @@ import ins.core.web.AbstractController;
 @Controller
 @RequestMapping("community")
 public class CommunityController extends AbstractController {
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommunityController.class);
     
     @Autowired
     @Qualifier("CommunityPostService")

@@ -33,26 +33,26 @@ public class TaskDataServiceImpl extends InsBaseServiceImpl<TaskData, TaskDataCr
         super(TaskData.class);
     }
     
-    @Override
-    public TaskData detail(TaskData entity) {
-        TaskData taskData = dao.selectOne(domainClass.getName() + ".detail", entity);
-        if(taskData != null){
-            CmmnFile cmmnFile = cmmnFileService.detail(taskData.getCmmnFile());
-            taskData.setCmmnFile(cmmnFile);
-        }
-        return taskData;
-    }
-    
-    @Override
-    public void insert(TaskData entity) {
-        cmmnFileService.insert(entity.getCmmnFile());
-        dao.insert(domainClass.getName()+".insert", entity);
-    }
-    
-    @Override
-    public void update(TaskData entity) {
-        cmmnFileService.update(entity.getCmmnFile());
-        dao.update(domainClass.getName()+".update", entity);
-    }
+	@Override
+	public TaskData detail(TaskData entity) {
+		TaskData taskData = dao.selectOne(domainClass.getName() + ".detail", entity);
+		if (taskData != null) {
+			CmmnFile cmmnFile = cmmnFileService.detail(taskData.getCmmnFile());
+			taskData.setCmmnFile(cmmnFile);
+		}
+		return taskData;
+	}
+
+	@Override
+	public void insert(TaskData entity) {
+		cmmnFileService.insert(entity.getCmmnFile());
+		dao.insert(domainClass.getName() + ".insert", entity);
+	}
+
+	@Override
+	public void update(TaskData entity) {
+		cmmnFileService.update(entity.getCmmnFile());
+		dao.update(domainClass.getName() + ".update", entity);
+	}
 
 }

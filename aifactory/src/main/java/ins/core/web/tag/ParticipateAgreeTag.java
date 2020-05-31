@@ -19,9 +19,9 @@ public class ParticipateAgreeTag extends SimpleTagSupport {
     private String taskId;
     
     protected boolean isAgree(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAgree = false;
-        if( auth != null){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		boolean isAgree = false;
+		if (auth != null) {
             Object principal = auth.getPrincipal();
             if( principal != null && principal instanceof LoginInfo ){
                 PageContext pageContext = (PageContext) getJspContext();

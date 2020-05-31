@@ -21,20 +21,20 @@ import ins.core.service.InsBaseServiceImpl;
  * </pre>
  */
 @Service("LapRankService")
-public class LapRankServiceImpl extends InsBaseServiceImpl<LapRank, LapRankCriterion> implements LapRankService{
-    
-    public LapRankServiceImpl() {
-        super(LapRank.class);
-    }
+public class LapRankServiceImpl extends InsBaseServiceImpl<LapRank, LapRankCriterion> implements LapRankService {
 
-    @Override
-    public int deleteByLap(LapRank entity) {
-        return dao.delete(domainClass.getName()+".deleteByLap", entity);
-    }
+	public LapRankServiceImpl() {
+		super(LapRank.class);
+	}
 
-    @Override
-    public int deleteByTask(LapRank entity) {
-        return dao.delete(domainClass.getName()+".deleteByTask", entity);
-    }
+	@Override
+	public int deleteByLap(LapRank entity) {
+		return dao.delete(domainClass.getName() + ".deleteByLap", entity);
+	}
+
+	@Override
+	public int deleteByTask(LapRank entity) {
+		return dao.delete(domainClass.getName() + ".deleteByTask", entity);
+	}
 
 }

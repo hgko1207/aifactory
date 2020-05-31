@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -34,8 +32,6 @@ import ins.core.web.multipart.MultipartFileHandler;
 @Controller
 @RequestMapping("cmmnFileDetail")
 public class CmmnFileDetailController extends AbstractController{
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(CmmnFileDetailController.class);
     
     @Autowired
     private CmmnFileDetailService service;

@@ -10,28 +10,28 @@ import org.springframework.ui.ModelMap;
 @Component
 public class ApiAspect {
 
-    @Around(value = "execution(* ins..*Controller.*(..)) or execution(* ins..*Api.*(..))")
-    public Object doApiDefaultAround(ProceedingJoinPoint pjp) throws Throwable {
+	@Around(value = "execution(* ins..*Controller.*(..)) or execution(* ins..*Api.*(..))")
+	public Object doApiDefaultAround(ProceedingJoinPoint pjp) throws Throwable {
 
-        Object[] obj = pjp.getArgs();
-        ModelMap modelMap = getModeMap(obj);
-        Object retVal = null;
+		Object[] obj = pjp.getArgs();
+		ModelMap modelMap = getModeMap(obj);
+		Object retVal = null;
 
-        if (modelMap != null) {
-            modelMap.addAttribute(ApiConstants.CODE, ApiConstants.CODE_SUCCESS);
-            modelMap.addAttribute(ApiConstants.MESSAGE, "Success");
-        }
-        retVal = pjp.proceed();
-        return retVal;
-    }
+		if (modelMap != null) {
+			modelMap.addAttribute(ApiConstants.CODE, ApiConstants.CODE_SUCCESS);
+			modelMap.addAttribute(ApiConstants.MESSAGE, "Success");
+		}
+		retVal = pjp.proceed();
+		return retVal;
+	}
 
-    private static ModelMap getModeMap(Object[] obj) {
-        ModelMap modelMap = null;
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i] instanceof ModelMap)
-                modelMap = (ModelMap) obj[i];
-        }
-        return modelMap;
-    }
+	private static ModelMap getModeMap(Object[] obj) {
+		ModelMap modelMap = null;
+		for (int i = 0; i < obj.length; i++) {
+			if (obj[i] instanceof ModelMap)
+				modelMap = (ModelMap) obj[i];
+		}
+		return modelMap;
+	}
 
 }

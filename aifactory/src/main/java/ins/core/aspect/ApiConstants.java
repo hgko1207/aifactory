@@ -1,6 +1,7 @@
 package ins.core.aspect;
 
 public class ApiConstants {
+	
     public static final String CODE = "code";
 
     public static final String MESSAGE = "message";

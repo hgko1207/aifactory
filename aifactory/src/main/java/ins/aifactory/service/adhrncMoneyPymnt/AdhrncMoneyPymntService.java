@@ -8,5 +8,4 @@ public interface AdhrncMoneyPymntService extends InsBaseService<AdhrncMoneyPymnt
 
     List<AdhrncMoneyPymnt> listStatus(AdhrncMoneyPymntCriterion criterion);
     
-    
 }

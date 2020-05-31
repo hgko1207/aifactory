@@ -44,69 +44,69 @@ public class CmmnFileServiceImpl extends InsBaseServiceImpl<CmmnFile, CmmnFileCr
         super(CmmnFile.class);
     }
 
-    @Override
-    public CmmnFile detail(CmmnFile entity) {
-        CmmnFile cmmnFile = new CmmnFile();
-        if (entity != null) {
-            cmmnFile = dao.selectOne(domainClass.getName() + ".detail", entity);
-            CmmnFileDetailCriterion fileDetailCriterion = new CmmnFileDetailCriterion();
-            fileDetailCriterion.setAtchFileId(cmmnFile.getAtchFileId());
-            List<CmmnFileDetail> fileDetailList = fileDetailService.list(fileDetailCriterion);
-            cmmnFile.setFiles(fileDetailList);
-        }
-        return cmmnFile;
-    }
+	@Override
+	public CmmnFile detail(CmmnFile entity) {
+		CmmnFile cmmnFile = new CmmnFile();
+		if (entity != null) {
+			cmmnFile = dao.selectOne(domainClass.getName() + ".detail", entity);
+			CmmnFileDetailCriterion fileDetailCriterion = new CmmnFileDetailCriterion();
+			fileDetailCriterion.setAtchFileId(cmmnFile.getAtchFileId());
+			List<CmmnFileDetail> fileDetailList = fileDetailService.list(fileDetailCriterion);
+			cmmnFile.setFiles(fileDetailList);
+		}
+		return cmmnFile;
+	}
 
-    @Override
-    public void insert(CmmnFile entity) {
-        try {
-            // ID 채번
-            entity.setAtchFileId(idgenService.getNextStringId());
-            dao.insert(domainClass.getName() + ".insert", entity);
+	@Override
+	public void insert(CmmnFile entity) {
+		try {
+			// ID 채번
+			entity.setAtchFileId(idgenService.getNextStringId());
+			dao.insert(domainClass.getName() + ".insert", entity);
 
-            // File Detail 등록
-            for (CmmnFileDetail fileDetail : entity.getFiles()) {
-                fileDetail.setCmmnFile(entity);
-                fileDetailService.insert(fileDetail);
-            }
+			// File Detail 등록
+			for (CmmnFileDetail fileDetail : entity.getFiles()) {
+				fileDetail.setCmmnFile(entity);
+				fileDetailService.insert(fileDetail);
+			}
 
-        } catch (FdlException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
-    }
+		} catch (FdlException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
+	}
 
-    @Override
-    public void update(CmmnFile entity) {
-        try {
-            if (entity == null) {
-                entity = new CmmnFile();
-            }
+	@Override
+	public void update(CmmnFile entity) {
+		try {
+			if (entity == null) {
+				entity = new CmmnFile();
+			}
 
-            if (StringUtils.isBlank(entity.getAtchFileId())) {
-                // ID 채번
-                entity.setAtchFileId(idgenService.getNextStringId());
-                dao.insert(domainClass.getName() + ".insert", entity);
-            }
+			if (StringUtils.isBlank(entity.getAtchFileId())) {
+				// ID 채번
+				entity.setAtchFileId(idgenService.getNextStringId());
+				dao.insert(domainClass.getName() + ".insert", entity);
+			}
 
-            fileDetailService.deleteByAtchFileId(entity.getAtchFileId());
+			fileDetailService.deleteByAtchFileId(entity.getAtchFileId());
 
-            // File Detail 등록
-            CmmnFileDetail fileDetail;
-            for (int i = 0; entity.getFiles() != null && i < entity.getFiles().size(); i++) {
-                fileDetail = entity.getFiles().get(i);
-                fileDetail.setCmmnFile(entity);
-                fileDetailService.insert(fileDetail);
-            }
-        } catch (FdlException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
-    }
+			// File Detail 등록
+			CmmnFileDetail fileDetail;
+			for (int i = 0; entity.getFiles() != null && i < entity.getFiles().size(); i++) {
+				fileDetail = entity.getFiles().get(i);
+				fileDetail.setCmmnFile(entity);
+				fileDetailService.insert(fileDetail);
+			}
+		} catch (FdlException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
+	}
 
-    @Override
-    public int delete(CmmnFile entity) {
-        fileDetailService.deleteByAtchFileId(entity.getAtchFileId());
-        return dao.delete(domainClass.getName() + ".delete", entity);
-    }
+	@Override
+	public int delete(CmmnFile entity) {
+		fileDetailService.deleteByAtchFileId(entity.getAtchFileId());
+		return dao.delete(domainClass.getName() + ".delete", entity);
+	}
 }

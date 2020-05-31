@@ -80,19 +80,19 @@ public class ApiExceptionHandler {
             LOGGER.error("MESSAGE="+message);
             LOGGER.error("EXCEPTION_MESSAGE="+ex.getMessage());
             LOGGER.error("##############################################################");
-        }else{
-            throw new InternalServerErrorException();
-        }
-        
-        return mav;
-    }
+		} else {
+			throw new InternalServerErrorException();
+		}
+
+		return mav;
+	}
     
-    private boolean isAjaxRequest(HttpServletRequest req) {
-        return req.getHeader("AJAX") != null && req.getHeader("AJAX").equals(Boolean.TRUE.toString());
-    }
-    
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public class InternalServerErrorException extends RuntimeException {
-        private static final long serialVersionUID = 1L;
-    }
+	private boolean isAjaxRequest(HttpServletRequest req) {
+		return req.getHeader("AJAX") != null && req.getHeader("AJAX").equals(Boolean.TRUE.toString());
+	}
+
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	public class InternalServerErrorException extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+	}
 }

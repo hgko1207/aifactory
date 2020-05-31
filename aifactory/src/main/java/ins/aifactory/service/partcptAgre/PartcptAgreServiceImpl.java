@@ -21,10 +21,11 @@ import ins.core.service.InsBaseServiceImpl;
  * </pre>
  */
 @Service("PartcptAgreService")
-public class PartcptAgreServiceImpl extends InsBaseServiceImpl<PartcptAgre, PartcptAgreCriterion> implements PartcptAgreService{
+public class PartcptAgreServiceImpl extends InsBaseServiceImpl<PartcptAgre, PartcptAgreCriterion>
+		implements PartcptAgreService {
 
-    public PartcptAgreServiceImpl() {
-        super(PartcptAgre.class);
-    }
-    
+	public PartcptAgreServiceImpl() {
+		super(PartcptAgre.class);
+	}
+
 }

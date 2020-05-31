@@ -1,7 +1,5 @@
 package ins.aifactory.service.qna;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ins.core.service.InsBaseServiceImpl;
@@ -23,17 +21,15 @@ import ins.core.service.InsBaseServiceImpl;
  * </pre>
  */
 @Service("QnaService")
-public class QnaServiceImpl extends InsBaseServiceImpl<Qna, QnaCriterion> implements QnaService{
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(QnaServiceImpl.class);
-    
-    public QnaServiceImpl() {
-        super(Qna.class);
-    }
+public class QnaServiceImpl extends InsBaseServiceImpl<Qna, QnaCriterion> implements QnaService {
 
-    @Override
-    public void updateAnswer(Qna entity) {
-        dao.update(domainClass.getName()+".updateAnswer", entity);
-    }
-    
+	public QnaServiceImpl() {
+		super(Qna.class);
+	}
+
+	@Override
+	public void updateAnswer(Qna entity) {
+		dao.update(domainClass.getName() + ".updateAnswer", entity);
+	}
+
 }

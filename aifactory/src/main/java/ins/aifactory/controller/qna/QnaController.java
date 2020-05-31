@@ -4,8 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -30,8 +28,6 @@ import ins.core.web.AbstractController;
 @Controller
 @RequestMapping("qna")
 public class QnaController extends AbstractController{
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(QnaController.class);
     
     @Autowired
     private QnaService service;

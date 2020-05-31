@@ -4,5 +4,4 @@ import ins.core.service.InsBaseService;
 
 public interface RoleService extends InsBaseService<Role, RoleCriterion> {
     
-    
 }

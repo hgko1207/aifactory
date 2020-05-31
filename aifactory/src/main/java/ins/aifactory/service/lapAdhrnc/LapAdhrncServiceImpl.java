@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import ins.aifactory.service.cmmnFile.CmmnFileService;
 import ins.aifactory.service.lap.Lap;
-import ins.aifactory.service.lapRank.LapRankCriterion;
 import ins.core.service.InsBaseServiceImpl;
 
 /**
