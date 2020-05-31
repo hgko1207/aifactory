@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.adhrncMoneyPymnt.AdhrncMoneyPymnt">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.adhrncMoneyPymnt.AdhrncMoneyPymnt">
+        <result property="lapAdhrnc.lap.task.taskId"    column="TASK_ID"/>
+        <result property="lapAdhrnc.lap.task.taskNm"    column="TASK_NM"/>
+        <result property="lapAdhrnc.lap.lapSn"          column="LAP_SN"/>
+        <result property="lapAdhrnc.lap.beginDttm"      column="BEGIN_DTTM"/>
+        <result property="lapAdhrnc.lap.endDttm"        column="END_DTTM"/>
+        <result property="lapAdhrnc.adhrncSn"           column="ADHRNC_SN"/>
+        <result property="lapAdhrnc.scre"               column="SCRE"/>
+        <result property="lapAdhrnc.user.userId"        column="USER_ID"/>
+        <result property="lapAdhrnc.user.userNm"        column="USER_NM"/>
+        <result property="lapRank.rank"                 column="RANK"/>
+        <result property="money"                        column="MONEY"/>
+        <result property="register.userId"              column="REGISTER_ID"/>
+        <result property="registDttm"                   column="REGIST_DTTM"/>
+        <result property="updusr.userId"                column="UPDUSR_ID"/>
+        <result property="updtDttm"                     column="UPDT_DTTM"/>
+    </resultMap>
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+        AMP.TASK_ID
+        ,T.TASK_NM
+        ,AMP.LAP_SN
+        ,AMP.ADHRNC_SN
+        ,LA.ADHRNC_SE_CODE
+        ,C.CODE_NM AS ADHRNC_SE_CODE_NM
+        ,LA.TEAM_SN
+        ,TM.TEAM_NM
+        ,LA.USER_ID
+        ,U.USER_NM
+        ,AMP.MONEY
+        ,AMP.REGISTER_ID
+        ,AMP.REGIST_DTTM
+        ,AMP.UPDUSR_ID
+        ,AMP.UPDT_DTTM
+    </sql>
+    <sql id="tables">
+        T_ADHRNC_MONEY_PYMNT AMP
+        INNER JOIN T_TASK T ON AMP.TASK_ID = T.TASK_ID
+        INNER JOIN T_LAP L ON AMP.LAP_SN = L.LAP_SN
+        INNER JOIN T_LAP_ADHRNC LA ON AMP.ADHRNC_SN = LA.ADHRNC_SN
+        INNER JOIN T_CMMN_CODE C ON LA.ADHRNC_SE_CODE = C.CMMN_CODE AND C.GROUP_CODE = '1001'
+        LEFT OUTER JOIN T_TEAM TM ON LA.TEAM_SN = TM.TEAM_SN
+        LEFT OUTER JOIN T_USER U ON LA.USER_ID = U.USER_ID
+    </sql>
+    <sql id="keyCriterion">
+        AMP.TASK_ID = #{lapAdhrnc.lap.task.taskId}
+        AND AMP.LAP_SN = #{lapAdhrnc.lap.lapSn}
+        AND AMP.ADHRNC_SN = #{lapAdhrnc.adhrncSn}
+    </sql>
+    <sql id="searchCriterion">
+        
+    </sql>
+    <sql id="searchOrder">
+        AMP.TASK_ID DESC
+        , AMP.LAP_SN DESC
+        , AMP.ADHRNC_SN DESC
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.adhrncMoneyPymnt.AdhrncMoneyPymnt" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.adhrncMoneyPymnt.AdhrncMoneyPymntCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.adhrncMoneyPymnt.AdhrncMoneyPymntCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.adhrncMoneyPymnt.AdhrncMoneyPymntCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.adhrncMoneyPymnt.AdhrncMoneyPymnt" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    
+    <select id="listStatus" parameterType="ins.aifactory.service.adhrncMoneyPymnt.AdhrncMoneyPymntCriterion" resultMap="resultMap">
+        SELECT L.LAP_SN, L.BEGIN_DTTM, L.END_DTTM, LA.SCRE
+            , ROW_NUMBER() OVER (PARTITION BY L.LAP_SN ORDER BY LA.SCRE DESC, LA.ADHRNC_SN ASC) AS RANK
+            , COALESCE(AMP.MONEY,0) AS MONEY, LA.USER_ID, U.USER_NM
+        FROM T_LAP L
+            INNER JOIN T_LAP_ADHRNC LA ON LA.TASK_ID = L.TASK_ID AND LA.LAP_SN = L.LAP_SN
+            INNER JOIN T_USER U ON U.USER_ID = LA.USER_ID
+            LEFT OUTER JOIN T_ADHRNC_MONEY_PYMNT AMP ON LA.ADHRNC_SN = AMP.ADHRNC_SN
+        WHERE LA.TASK_ID = #{taskId}
+             AND L.ACTVTY_YN = 'N' AND L.END_DTTM IS NOT NULL AND L.END_DTTM &lt; NOW()
+             AND LA.RESULT_SBMISN_MTHD_CODE = '0001'
+        ORDER BY L.LAP_SN DESC, RANK ASC
+    </select>
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.adhrncMoneyPymnt.AdhrncMoneyPymnt">
+        INSERT INTO T_ADHRNC_MONEY_PYMNT
+        (
+            TASK_ID
+            ,LAP_SN
+            ,ADHRNC_SN
+            ,MONEY
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{lapAdhrnc.lap.task.taskId}
+            ,#{lapAdhrnc.lap.lapSn}
+            ,#{lapAdhrnc.adhrncSn}
+            ,#{money}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.adhrncMoneyPymnt.AdhrncMoneyPymnt">
+        UPDATE 
+            T_ADHRNC_MONEY_PYMNT AMP
+        SET
+            MONEY=#{money}
+            ,UPDUSR_ID=#{loginInfo.id}
+            ,UPDT_DTTM=CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.adhrncMoneyPymnt.AdhrncMoneyPymnt">
+        DELETE FROM T_ADHRNC_MONEY_PYMNT AMP
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        DELETE FROM T_ADHRNC_MONEY_PYMNT
+    </delete>
+
+</mapper>

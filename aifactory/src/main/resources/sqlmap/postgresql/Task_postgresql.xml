@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.task.Task">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.task.Task">
+        <result property="taskId"               column="TASK_ID"/>
+        <result property="taskNm"               column="TASK_NM"/>
+        <result property="taskSumry"            column="TASK_SUMRY"/>
+        <result property="taskDc"               column="TASK_DC"/>
+        <result property="cmmnFile.atchFileId"  column="ATCH_FILE_ID"/>
+        <result property="beginDttm"            column="BEGIN_DTTM"/>
+        <result property="endDttm"              column="END_DTTM"/>
+        <result property="othbcYn"              column="OTHBC_YN"/>
+        <result property="grdngFileCours"       column="GRDNG_FILE_COURS"/>
+        <result property="register.userId"      column="REGISTER_ID"/>
+        <result property="registDttm"           column="REGIST_DTTM"/>
+        <result property="updusr.userId"        column="UPDUSR_ID"/>
+        <result property="updtDttm"             column="UPDT_DTTM"/>
+        
+        <result property="map.modelNm"          column="MODEL_NM"/>
+        <result property="map.scre"             column="SCRE"/>
+        <result property="map.actvtyLapSn"      column="ACTVTY_LAP_SN"/>
+        <result property="map.totalLapCnt"      column="TOTAL_LAP_CNT"/>
+        <result property="map.nextTargetScre"   column="NEXT_TARGET_SCRE"/>
+        <result property="map.nextDueDate"      column="NEXT_DUE_DATE"/>
+        <result property="map.pymntMoney"       column="PYMNT_MONEY"/>
+        
+        <collection property="cmmnFile.files" column="ATCH_FILE_ID" javaType="java.util.ArrayList" ofType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetail" select="getFileDetail"/>
+    </resultMap>
+
+<!--      -->
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+       TASK_ID
+        ,TASK_NM
+        ,TASK_SUMRY
+        ,TASK_DC
+        ,ATCH_FILE_ID
+        ,(SELECT FILE_STRE_COURS FROM T_CMMN_FILE_DETAIL WHERE ATCH_FILE_ID=T.ATCH_FILE_ID ORDER BY FILE_SN ASC LIMIT 1) AS FILE_STRE_COURS
+        ,(SELECT STRE_FILE_NM FROM T_CMMN_FILE_DETAIL WHERE ATCH_FILE_ID=T.ATCH_FILE_ID ORDER BY FILE_SN ASC LIMIT 1) AS STRE_FILE_NM
+        ,BEGIN_DTTM
+        ,END_DTTM
+        ,OTHBC_YN
+        ,GRDNG_FILE_COURS
+        ,REGISTER_ID
+        ,REGIST_DTTM
+        ,UPDUSR_ID
+        ,UPDT_DTTM
+        
+        , (SELECT MODEL_NM FROM T_LAP_ADHRNC WHERE TASK_ID=T.TASK_ID AND LAP_SN IN (SELECT LAP_SN FROM T_LAP WHERE TASK_ID=T.TASK_ID AND ACTVTY_YN = 'Y')  ORDER BY SCRE DESC LIMIT 1) AS MODEL_NM
+        , (SELECT COALESCE(MAX(SCRE),0) FROM T_LAP_ADHRNC WHERE TASK_ID=T.TASK_ID AND LAP_SN IN (SELECT LAP_SN FROM T_LAP WHERE TASK_ID=T.TASK_ID AND ACTVTY_YN = 'Y')) AS SCRE
+        , (SELECT LAP_SN FROM T_LAP WHERE TASK_ID=T.TASK_ID AND ACTVTY_YN = 'Y') AS ACTVTY_LAP_SN
+        , (SELECT COUNT(*) FROM T_LAP WHERE TASK_ID=T.TASK_ID) AS TOTAL_LAP_CNT
+        , (SELECT GOAL_SCRE FROM T_LAP WHERE TASK_ID=T.TASK_ID AND BEGIN_DTTM > NOW() ORDER BY BEGIN_DTTM LIMIT 1) AS NEXT_TARGET_SCRE
+        , (SELECT CASE WHEN END_DTTM IS NULL THEN NULL WHEN END_DTTM IS NOT NULL THEN TO_CHAR(END_DTTM, 'YYYY-MM-DD') END FROM T_LAP WHERE TASK_ID=T.TASK_ID AND BEGIN_DTTM > NOW() ORDER BY BEGIN_DTTM LIMIT 1) AS NEXT_DUE_DATE
+        , (SELECT COALESCE(SUM(MONEY),0) FROM T_ADHRNC_MONEY_PYMNT WHERE TASK_ID=T.TASK_ID ) AS PYMNT_MONEY
+    </sql>
+    <sql id="tables">
+        T_TASK T 
+    </sql>
+    <sql id="keyCriterion">
+        TASK_ID = #{taskId}
+    </sql>
+    <sql id="searchCriterion">
+        <if test="mode != null and mode=='host'">
+            AND REGISTER_ID = #{userId}
+        </if>
+        <if test="mode != null and mode=='join'">
+            AND TASK_ID IN (SELECT TASK_ID FROM T_LAP_ADHRNC WHERE USER_ID = #{userId})
+        </if>
+        <choose>
+            <when test="othbcYn != null and othbcYn == 'Y'.toString()">
+                AND OTHBC_YN = 'Y'
+            </when>
+            <when test="othbcYn != null and othbcYn == 'N'.toString()">
+                AND OTHBC_YN = 'N' AND REGISTER_ID = #{userId}
+            </when>
+            <otherwise>
+                AND (OTHBC_YN = 'Y' OR (OTHBC_YN = 'N' AND REGISTER_ID = #{userId}) )
+            </otherwise>
+        </choose>
+        <if test="keyword != null and keyword !=''">
+            AND (TASK_NM ILIKE '%' || #{keyword} || '%' OR TASK_DC ILIKE '%' || #{keyword} || '%')
+        </if>
+    </sql>
+    <sql id="searchOrder">
+        END_DTTM DESC
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.task.Task" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.task.TaskCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.task.TaskCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.task.TaskCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.task.Task" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    
+    <select id="getFileDetail" resultType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetail">
+        SELECT
+            ATCH_FILE_ID, FILE_SN, FILE_STRE_COURS, STRE_FILE_NM, ORIGNL_FILE_NM
+        FROM T_CMMN_FILE_DETAIL
+        WHERE ATCH_FILE_ID = #{atchFileId}
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.task.Task">
+        INSERT INTO T_TASK
+        (
+           TASK_ID
+            ,TASK_NM
+            ,TASK_SUMRY
+            ,TASK_DC
+            ,ATCH_FILE_ID
+            ,BEGIN_DTTM
+            ,END_DTTM
+            ,OTHBC_YN
+            ,GRDNG_FILE_COURS
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{taskId}
+            ,#{taskNm}
+            ,#{taskSumry}
+            ,#{taskDc}
+            ,#{cmmnFile.atchFileId}
+            ,#{beginDttm}
+            ,#{endDttm, jdbcType=TIMESTAMP}
+            ,#{othbcYn}
+            ,#{grdngFileCours}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.task.Task">
+        UPDATE 
+            T_TASK
+        SET
+            TASK_NM=#{taskNm}
+            ,TASK_SUMRY=#{taskSumry}
+            ,TASK_DC=#{taskDc}
+            ,ATCH_FILE_ID=#{cmmnFile.atchFileId}
+            ,BEGIN_DTTM=#{beginDttm}
+            ,END_DTTM=#{endDttm, jdbcType=TIMESTAMP}
+            ,OTHBC_YN=#{othbcYn}
+            ,GRDNG_FILE_COURS=#{grdngFileCours}
+            ,UPDUSR_ID=#{loginInfo.id}
+            ,UPDT_DTTM=CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.task.Task">
+        DELETE FROM T_TASK
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        DELETE FROM T_TASK
+    </delete>
+
+</mapper>

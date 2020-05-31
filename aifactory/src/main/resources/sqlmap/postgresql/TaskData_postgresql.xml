@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.taskData.TaskData">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.taskData.TaskData">
+        <result property="task.taskId"          column="TASK_ID"/>
+        <result property="task.taskNm"          column="TASK_NM"/>
+        <result property="task.taskDc"          column="TASK_DC"/>
+        <result property="dataSetDc"            column="DATA_SET_DC"/>
+        <result property="fileDc"               column="FILE_DC"/>
+        <result property="cmmnFile.atchFileId"  column="ATCH_FILE_ID"/>
+        <result property="register.userId"      column="REGISTER_ID"/>
+        <result property="registDttm"           column="REGIST_DTTM"/>
+        <result property="updusr.userId"        column="UPDUSR_ID"/>
+        <result property="updtDttm"             column="UPDT_DTTM"/>
+    </resultMap>
+
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+       T.TASK_ID
+        ,T.TASK_NM
+        ,T.TASK_DC
+        ,TD.DATA_SET_DC
+        ,TD.FILE_DC
+        ,TD.ATCH_FILE_ID
+        ,TD.REGISTER_ID
+        ,TD.REGIST_DTTM
+        ,TD.UPDUSR_ID
+        ,TD.UPDT_DTTM
+    </sql>
+    <sql id="tables">
+        T_TASK_DATA TD 
+        INNER JOIN T_TASK T ON T.TASK_ID = TD.TASK_ID
+    </sql>
+    <sql id="keyCriterion">
+        TD.TASK_ID = #{task.taskId}
+    </sql>
+    <sql id="searchCriterion">
+        
+    </sql>
+    <sql id="searchOrder">
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.taskData.TaskData" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.taskData.TaskDataCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.taskData.TaskDataCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.taskData.TaskDataCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.taskData.TaskData" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.taskData.TaskData">
+        INSERT INTO T_TASK_DATA
+        (
+            TASK_ID
+            <if test="dataSetDc != null and dataSetDc != ''">
+                ,DATA_SET_DC
+            </if>
+            <if test="fileDc != null and fileDc != ''">
+                ,FILE_DC
+            </if>
+            ,ATCH_FILE_ID
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{task.taskId}
+            <if test="dataSetDc != null and dataSetDc != ''">
+                ,#{dataSetDc}
+            </if>
+            <if test="fileDc != null and fileDc != ''">
+                ,#{fileDc}
+            </if>
+            ,#{cmmnFile.atchFileId}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.taskData.TaskData">
+        UPDATE 
+            T_TASK_DATA TD
+        <set>
+            <if test="dataSetDc != null and dataSetDc != ''">
+                DATA_SET_DC=#{dataSetDc},
+            </if>
+            <if test="fileDc != null and fileDc != ''">
+                FILE_DC=#{fileDc},
+            </if>
+            ATCH_FILE_ID=#{cmmnFile.atchFileId},
+            UPDUSR_ID=#{loginInfo.id},
+            UPDT_DTTM=CURRENT_TIMESTAMP
+        </set>
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.taskData.TaskData">
+        DELETE FROM T_TASK_DATA TD
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        DELETE FROM T_TASK_DATA
+    </delete>
+
+</mapper>

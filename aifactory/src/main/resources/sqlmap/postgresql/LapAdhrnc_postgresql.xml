@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.lapAdhrnc.LapAdhrnc">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.lapAdhrnc.LapAdhrnc">
+        <result property="lap.task.taskId"          column="TASK_ID"/>
+        <result property="lap.task.taskNm"          column="TASK_NM"/>
+        <result property="lap.lapSn"                column="LAP_SN"/>
+        <result property="adhrncSn"                 column="ADHRNC_SN"/>
+        <result property="adhrncSeCode.cmmnCode"    column="ADHRNC_SE_CODE"/>
+        <result property="adhrncSeCode.codeNm"      column="ADHRNC_SE_CODE_NM"/>
+        <result property="team.teamSn"              column="TEAM_SN"/>
+        <result property="team.teamNm"              column="TEAM_NM"/>
+        <result property="user.userId"              column="USER_ID"/>
+        <result property="user.userNm"              column="USER_NM"/>
+        <result property="modelNm"                  column="MODEL_NM"/>
+        <result property="scre"                     column="SCRE"/>
+        <result property="rank"                     column="RANK"/>
+        <result property="resultSbmisnMthdCode.cmmnCode"    column="RESULT_SBMISN_MTHD_CODE"/>
+        <result property="resultSbmisnMthdCode.codeNm"      column="RESULT_SBMISN_MTHD_CODE_NM"/>
+        <result property="cmmnFile.atchFileId"      column="ATCH_FILE_ID"/>
+        <result property="register.userId"          column="REGISTER_ID"/>
+        <result property="registDttm"               column="REGIST_DTTM"/>
+    </resultMap>
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+        LA.TASK_ID
+        ,T.TASK_NM
+        ,LA.LAP_SN
+        ,LA.ADHRNC_SN
+        ,LA.ADHRNC_SE_CODE
+        ,ADSC.CODE_NM AS ADHRNC_SE_CODE_NM
+        ,LA.TEAM_SN
+        ,TM.TEAM_NM
+        ,LA.USER_ID
+        ,U.USER_NM
+        ,LA.MODEL_NM
+        ,LA.SCRE
+        ,LA.RANK
+        ,LA.RESULT_SBMISN_MTHD_CODE
+        ,RSMC.CODE_NM AS RESULT_SBMISN_MTHD_CODE_NM
+        ,LA.ATCH_FILE_ID
+        ,LA.REGISTER_ID
+        ,LA.REGIST_DTTM
+    </sql>
+    <sql id="tables">
+        T_LAP_ADHRNC LA
+        INNER JOIN T_TASK T ON LA.TASK_ID = T.TASK_ID
+        INNER JOIN T_LAP L ON LA.TASK_ID = L.TASK_ID AND  LA.LAP_SN = L.LAP_SN 
+        INNER JOIN T_CMMN_CODE ADSC ON LA.ADHRNC_SE_CODE = ADSC.CMMN_CODE AND ADSC.GROUP_CODE = '1001'
+        INNER JOIN T_CMMN_CODE RSMC ON LA.ADHRNC_SE_CODE = RSMC.CMMN_CODE AND RSMC.GROUP_CODE = '1002'
+        LEFT OUTER JOIN T_TEAM TM ON LA.TEAM_SN = TM.TEAM_SN
+        LEFT OUTER JOIN T_USER U ON LA.USER_ID = U.USER_ID
+    </sql>
+    <sql id="keyCriterion">
+        LA.ADHRNC_SN = #{adhrncSn}
+    </sql>
+    <sql id="searchCriterion">
+        <if test="taskId != null and taskId != ''">
+            AND LA.TASK_ID = #{taskId}
+        </if>
+        <if test="userId != null and userId != ''">
+            AND LA.USER_ID = #{userId}
+        </if>
+        <if test="resultSbmisnMthdCode != null and resultSbmisnMthdCode != ''">
+            AND LA.RESULT_SBMISN_MTHD_CODE = #{resultSbmisnMthdCode}
+        </if>
+        <if test="resultSbmisnMthdCode != null and resultSbmisnMthdCode == '0001'">
+            AND L.ACTVTY_YN = 'N' AND L.END_DTTM IS NOT NULL AND L.END_DTTM &lt; NOW()
+        </if>
+    </sql>
+    <sql id="searchOrder">
+        LA.TASK_ID DESC
+        , LA.LAP_SN DESC
+        , LA.SCRE DESC
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.lapAdhrnc.LapAdhrnc" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.lapAdhrnc.LapAdhrncCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.lapAdhrnc.LapAdhrncCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.lapAdhrnc.LapAdhrncCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.lapAdhrnc.LapAdhrnc" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.lapAdhrnc.LapAdhrnc">
+        <selectKey keyProperty="adhrncSn" resultType="Integer" order="BEFORE">
+            SELECT CAST(COALESCE(MAX(ADHRNC_SN), '0') AS INTEGER) + 1 AS ADHRNC_SN
+            FROM T_LAP_ADHRNC
+        </selectKey> 
+        INSERT INTO T_LAP_ADHRNC
+        (
+            ADHRNC_SN
+            ,TASK_ID
+            ,LAP_SN
+            ,ADHRNC_SE_CODE
+            ,TEAM_SN
+            ,USER_ID
+            ,MODEL_NM
+            ,SCRE
+            ,RESULT_SBMISN_MTHD_CODE
+            ,ATCH_FILE_ID
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{adhrncSn}
+            ,#{lap.task.taskId}
+            ,#{lap.lapSn}
+            ,#{adhrncSeCode.cmmnCode}
+            ,#{team.teamSn}::BIGINT
+            ,#{user.userId}
+            ,#{modelNm}
+            ,#{scre}::smallint
+            ,#{resultSbmisnMthdCode.cmmnCode}
+            ,#{cmmnFile.atchFileId}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.lapAdhrnc.LapAdhrnc">
+        UPDATE 
+            T_LAP_ADHRNC LA
+        SET
+            ADHRNC_SE_CODE=#{adhrncSeCode.cmmnCode}
+            ,TEAM_SN=#{team.teamSn}::BIGINT
+            ,USER_ID=#{user.userId}
+            ,MODEL_NM=#{modelNm}
+            ,RESULT_SBMISN_MTHD_CODE=#{resultSbmisnMthdCode.cmmnCode}
+            ,SCRE=#{scre}
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <update id="updateRank" parameterType="java.util.List">
+        <foreach item="item" index="index" collection="list">
+            SELECT updateRank(#{item.task.taskId}::text, #{item.lapSn}::smallint);
+        </foreach>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.lapAdhrnc.LapAdhrnc">
+        DELETE FROM T_LAP_ADHRNC LA
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        DELETE FROM T_LAP_ADHRNC
+    </delete>
+
+</mapper>

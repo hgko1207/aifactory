@@ -1,0 +1,77 @@
+@charset "EUC-KR";
+
+.nav-tabs {
+	border-right: 0px solid #ddd;
+    padding: 0;
+}
+
+.card-footer+.table, .card-footer+[class*=table-responsive] {
+	border-top: 0px;
+}
+
+.tab-content {
+	padding: 0;
+	margin: 0;
+}
+
+.competition-leaderboard__private-image {
+	background-color: #f0f0f0;
+    border-radius: 50%;
+    color: #b3b3b3;
+    font-size: 84px;
+    height: 150px;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin-bottom: 35px;
+    width: 150px;
+}
+
+.competition-leaderboard__private-image, .competition-leaderboard__private-message {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.competition-leaderboard__private-message {
+	-webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 48px 20px;
+}
+
+.competition-leaderboard__private-header {
+	color: #47494d;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.competition-leaderboard__private-text {
+    color: #47494d;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    max-width: 750px;
+    text-align: center;
+}
+
+.datatable-header {
+	border-bottom: 0px;
+}
+
+.datatable-footer, .datatable-header {
+	padding: 0px;
+}
+
+.datatable-footer {
+	border-top: 0px;
+}
+
+.team-name-text {
+	padding-left: 2.6rem;
+}

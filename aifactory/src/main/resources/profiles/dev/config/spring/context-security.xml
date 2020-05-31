@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- local -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <security:http pattern="/resources/**" security="none"/>
+    <security:http pattern="\A/WEB-INF/jsp/.*\Z" request-matcher="regex" security="none"/>
+    
+    <security:http auto-config="false" use-expressions="true" entry-point-ref="loginUrlAuthenticationEntryPoint">
+        <security:intercept-url pattern="/**" access="isAuthenticated()"/>
+<!--         <security:form-login -->
+<!--             username-parameter="loginid" -->
+<!--             password-parameter="loginpwd" -->
+<!--             login-page="/member/login.do" -->
+<!--             default-target-url="/main/main.do" -->
+<!--             authentication-failure-url="/member/login.do?fail=true" -->
+<!--             authentication-success-handler-ref="customAuthenticationSuccessHandler" -->
+<!--             authentication-failure-handler-ref="customAuthenticationFailureHandler" -->
+<!--         /> -->
+        <security:session-management session-authentication-strategy-ref="sas"/>
+        <security:access-denied-handler error-page="/resources/err/code403.jsp"/>
+        <security:logout />
+        
+        <security:custom-filter position="FORM_LOGIN_FILTER" ref="RSAUsernamePasswordAuthenticationFilter" />
+        <security:custom-filter before="LOGOUT_FILTER" ref="RSAKeyGeneratorFilter"/>
+        <security:custom-filter before="BASIC_AUTH_FILTER" ref="beforeBasicAuthFilter"/>
+        <security:custom-filter after="EXCEPTION_TRANSLATION_FILTER" ref="ajaxSessionTimeoutFilter"/>
+<!--         <security:custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor"/> -->
+    </security:http>
+    
+    <bean id="loginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <property name="loginFormUrl" value="/member/login.do"/>
+    </bean>
+    
+    <bean id="ajaxSessionTimeoutFilter" class="ins.web.filter.AjaxSessionTimeoutFilter">
+        <property name="ajaxHeader" value="AJAX" />
+    </bean>
+    
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider user-service-ref="customJdbcDaoImpl">
+            <security:password-encoder ref="bcryptPasswordEncoder" />
+        </security:authentication-provider>
+    </security:authentication-manager>
+    
+    <bean id="RSAKeyGeneratorFilter" class="ins.web.filter.RSAKeyGeneratorFilter" />
+    <bean id="RSAUsernamePasswordAuthenticationFilter" class="ins.web.filter.RSAUsernamePasswordAuthenticationFilter">
+        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="authenticationSuccessHandler" ref="customAuthenticationSuccessHandler" />
+        <property name="authenticationFailureHandler" ref="customAuthenticationFailureHandler" />
+        <property name="usernameParameter" value="loginid" />
+        <property name="passwordParameter" value="loginpwd" />
+    </bean>
+    
+    <bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="accessDecisionManager" ref="accessDecisionManager" />
+        <property name="securityMetadataSource" ref="reloadableFilterInvocationSecurityMetadataSource" />
+    </bean>
+ 
+    <bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+        <constructor-arg>
+            <list>
+                <bean class="org.springframework.security.access.vote.RoleVoter">
+                    <property name="rolePrefix" value="" />
+                </bean>
+            </list>
+        </constructor-arg>
+        <property name="allowIfAllAbstainDecisions" value="false" />
+    </bean>
+ 
+    <bean id="reloadableFilterInvocationSecurityMetadataSource" class="ins.comp.service.security.ReloadableFilterInvocationSecurityMetadataSource">
+        <constructor-arg ref="requestMap" />
+        <property name="securedObjectService" ref="securedObjectService" />
+    </bean>
+ 
+    <bean id="securedObjectService" class="ins.comp.service.security.SecuredObjectServiceImpl">
+        <property name="secureObjectDao" ref="securedObjectDao" />
+    </bean>
+ 
+    <bean id="securedObjectDao" class="ins.comp.service.security.SecuredObjectDao">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlRolesAndUrl" value="
+            WITH T AS (
+                SELECT
+                    CONCAT('/', m.menu_path, '/**') AS URL, agmam.author_group_code AS AUTHORITY
+                FROM
+                    t_menu m
+                        LEFT OUTER JOIN t_auth_grp_menu_auth_mapng agmam ON m.menu_code = agmam.menu_code
+                WHERE 
+                    m.delete_yn = 'N'
+                    AND agmam.delete_yn = 'N'
+                    AND m.menu_path IS NOT NULL
+                    AND m.menu_path != ''
+            )
+            SELECT URL, AUTHORITY
+            FROM T
+            GROUP BY URL, AUTHORITY
+            ORDER BY URL, AUTHORITY
+        " />
+    </bean>
+ 
+    <bean id="requestMap" class="ins.comp.service.security.UrlResourcesMapFactoryBean" init-method="init">
+        <property name="securedObjectService" ref="securedObjectService" />
+    </bean>
+    
+    <bean id="customJdbcDaoImpl" class="ins.comp.service.security.CustomJdbcDaoImpl">
+        <property name="dataSource" ref="dataSource" />
+        <property name="rolePrefix" value="" />
+        <property name="usersByUsernameQuery" value="SELECT user_id, user_password, user_nm FROM T_USR WHERE user_id=?" />
+        <property name="authoritiesByUsernameQuery" value="SELECT GUM.author_group_code FROM t_usr U INNER JOIN t_auth_grp_usr_mapng GUM ON U.user_id = GUM.user_id INNER JOIN t_auth_grp G ON GUM.author_group_code = G.author_group_code WHERE U.user_id = ?" />
+        <property name="enableGroups" value="false" />
+    </bean>
+    
+    <bean id="customAuthenticationSuccessHandler" class="ins.comp.service.security.CustomAuthenticationSuccessHandler">
+        <property name="targetUrlParameter" value="loginRedirect" />
+        <property name="useReferer" value="false" />
+        <property name="defaultUrl" value="/task/search.do" />
+    </bean>
+    <bean id="customAuthenticationFailureHandler" class="ins.comp.service.security.CustomAuthenticationFailureHandler">
+        <property name="loginidname" value="loginid" />
+        <property name="loginpasswdname" value="loginpwd" />
+        <property name="loginredirectname" value="loginRedirect" />
+        <property name="exceptionmsgname" value="securityexceptionmsg" />
+        <property name="defaultFailureUrl" value="/member/login.do?fail=true" />
+    </bean>
+    <bean id="simpleUrlAuthenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+        <property name="useForward" value="true" />
+        <property name="defaultFailureUrl" value="/member/login.do?fail=true" />
+    </bean>
+    
+    <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+    
+    <bean id="sas" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">
+        <constructor-arg>
+            <list>
+                <bean class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+                    <constructor-arg ref="sessionRegistry"/>
+                    <property name="maximumSessions" value="1" />
+                    <property name="exceptionIfMaximumExceeded" value="false" />
+                </bean>
+                <bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy">
+                </bean>
+                <bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+                    <constructor-arg ref="sessionRegistry"/>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+</beans>

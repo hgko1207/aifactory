@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.userRole.UserRole">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.userRole.UserRole">
+        <result property="user.userId"      column="USER_ID"/>
+        <result property="role.roleCode"    column="ROLE_CODE"/>
+        <result property="register.id"      column="REGISTER_ID"/>
+        <result property="registDttm"       column="REGIST_DTTM"/>
+        <result property="updusr.id"        column="UPDUSR_ID"/>
+        <result property="updtDttm"         column="UPDT_DTTM"/>
+    </resultMap>
+
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+        USER_ID
+        ,ROLE_CODE
+        ,REGISTER_ID
+        ,REGIST_DTTM
+        ,UPDUSR_ID
+        ,UPDT_DTTM
+    </sql>
+    <sql id="tables">
+        T_USER_ROLE
+    </sql>
+    <sql id="keyCriterion">
+        ROLE_CODE = #{roleCode}
+    </sql>
+    <sql id="searchCriterion">
+        
+    </sql>
+    <sql id="searchOrder">
+        USER_ID ASC, ROLE_CODE ASC
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.userRole.UserRole" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.userRole.UserRoleCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.userRole.UserRoleCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.userRole.UserRoleCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.userRole.UserRole" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.userRole.UserRole">
+        INSERT INTO T_USER_ROLE
+        (
+            USER_ID
+            ,ROLE_CODE
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{user.userId}
+            ,#{role.roleCode}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.userRole.UserRole">
+        
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.userRole.UserRole">
+        DELETE FROM T_USER_ROLE
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        DELETE FROM T_USER_ROLE
+    </delete>
+
+</mapper>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.cmmnFile.CmmnFile">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.cmmnFile.CmmnFile">
+        <result property="atchFileId"           column="ATCH_FILE_ID" />
+        <result property="deleteYn"             column="DELETE_YN" />
+        <result property="register.userId"      column="REGISTER_ID" />
+        <result property="registDttm"           column="REGIST_DTTM" />
+        <result property="updUsr.userId"        column="UPDUSR_ID" />
+        <result property="updtDttm"             column="UPDT_DTTM" />
+    </resultMap>
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+        ATCH_FILE_ID,
+        DELETE_YN,
+        REGISTER_ID,
+        REGIST_DTTM,
+        UPDUSR_ID,
+        UPDT_DTTM
+    </sql>
+    <sql id="tables">
+        T_CMMN_FILE
+    </sql>
+    <sql id="keyCriterion">
+        ATCH_FILE_ID = #{atchFileId}
+    </sql>
+    <sql id="searchCriterion">
+        ATCH_FILE_ID = #{atchFileId}
+    </sql>
+    <sql id="searchOrder">
+        ATCH_FILE_ID
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.cmmnFile.CmmnFile" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.cmmnFile.CmmnFileCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.cmmnFile.CmmnFileCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.cmmnFile.CmmnFileCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.cmmnFile.CmmnFile" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <select id="getFileSeqId" resultType="java.lang.String">
+        SELECT nextval('t_cmm_file_seq')
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.cmmnFile.CmmnFile">
+        INSERT INTO T_CMMN_FILE
+        (
+            ATCH_FILE_ID
+            , DELETE_YN
+            , REGISTER_ID
+            , REGIST_DTTM
+        )
+        VALUES
+        (
+            #{atchFileId} 
+            , 'N'
+            , #{loginInfo.id} 
+            , CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.cmmnFile.CmmnFile">
+        UPDATE 
+            T_CMMN_FILE
+        SET
+            ATCH_FILE_ID = #{atchFileId}
+            , DELETE_YN = #{deleteYn}
+            , UPDUSR_ID = #{loginInfo.id}
+            , UPDT_DTTM = CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.cmmnFile.CmmnFile">
+        DELETE FROM T_CMMN_FILE
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        UPDATE T_CMMN_FILE
+        SET
+           DELETE_YN = 'Y'
+    </delete>
+    
+    
+    <!-- ============================================================= -->
+    <!-- SEQ ID 조회                                                         -->
+    <!-- ============================================================= -->
+    <select id="getSeqId" resultType="String">
+        SELECT NEXTVAL('t_cmm_file_seq')
+    </select>
+</mapper>

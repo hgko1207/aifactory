@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.cmmnFileDetail.CmmnFileDetail">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.cmmnFileDetail.CmmnFileDetail" autoMapping="true">
+        <result property="cmmnFile.atchFileId" column="ATCH_FILE_ID"/>
+        <result property="register.userId"      column="REGISTER_ID" />
+        <result property="registDttm"             column="REGIST_DTTM" />
+        <result property="updUsr.userId"        column="UPDUSR_ID" />
+        <result property="updtDttm"               column="REGIST_DTTM" />
+    </resultMap>
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+        A.ATCH_FILE_ID,
+        B.FILE_SN,
+        B.FILE_STRE_COURS,
+        B.STRE_FILE_NM,
+        B.ORIGNL_FILE_NM,
+        B.FILE_EXTSN,
+        B.FILE_DC,
+        B.FILE_SIZE,
+        B.DELETE_YN,
+        B.REGISTER_ID,
+        B.REGIST_DTTM,
+        B.UPDUSR_ID,
+        B.UPDT_DTTM
+    </sql>
+    <sql id="tables">
+        T_CMMN_FILE A
+        INNER JOIN T_CMMN_FILE_DETAIL B ON A.ATCH_FILE_ID = B.ATCH_FILE_ID
+    </sql>
+    <sql id="keyCriterion">
+        B.ATCH_FILE_ID = #{cmmnFile.atchFileId}
+        AND B.FILE_SN = #{fileSn}
+    </sql>
+    <sql id="searchCriterion">
+        <if test="atchFileId != null and atchFileId != ''">
+            AND B.ATCH_FILE_ID = #{atchFileId}
+        </if>
+        <if test="fileSn != null and fileSn != ''">
+            AND B.FILE_SN = #{fileSn}
+        </if>
+    </sql>
+    <sql id="searchOrder">
+        A.ATCH_FILE_ID ASC, B.FILE_SN ASC
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetail" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetailCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetailCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetailCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetail" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetail">
+        <selectKey keyProperty="fileSn" resultType="Integer" order="BEFORE">
+            SELECT CAST(COALESCE(MAX(FILE_SN), '0') AS INTEGER) + 1 AS FILE_SN
+            FROM T_CMMN_FILE_DETAIL
+            WHERE ATCH_FILE_ID =  #{cmmnFile.atchFileId}
+        </selectKey> 
+        INSERT INTO T_CMMN_FILE_DETAIL
+        (
+            ATCH_FILE_ID
+            , FILE_SN
+            , FILE_STRE_COURS
+            , STRE_FILE_NM
+            , ORIGNL_FILE_NM
+            , FILE_EXTSN
+            , FILE_DC
+            , FILE_SIZE
+            , DELETE_YN
+            , REGISTER_ID
+            , REGIST_DTTM
+        )
+        VALUES
+        (
+            #{cmmnFile.atchFileId} 
+            , #{fileSn} 
+            , #{fileStreCours} 
+            , #{streFileNm} 
+            , #{orignlFileNm} 
+            , #{fileExtsn} 
+            , #{fileDc} 
+            , #{fileSize} 
+            , 'N'
+            , #{loginInfo.id} 
+            , CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetail">
+        UPDATE 
+            T_CMMN_FILE_DETAIL B
+        SET
+            ATCH_FILE_ID = #{cmmnFile.atchFileId}
+            , DELETE_YN = #{deleteYn}
+            , UPDUSR_ID = #{loginInfo.id}
+            , REGIST_DTTM = CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetail">
+        DELETE FROM T_CMMN_FILE_DETAIL B
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        UPDATE T_CMMN_FILE_DETAIL B
+        SET
+           DELETE_YN = 'Y'
+    </delete>
+    
+    <delete id="deleteByAtchFileId" parameterType="string">
+        DELETE FROM T_CMMN_FILE_DETAIL 
+        WHERE ATCH_FILE_ID = #{atchFileId}
+    </delete>
+    
+</mapper>

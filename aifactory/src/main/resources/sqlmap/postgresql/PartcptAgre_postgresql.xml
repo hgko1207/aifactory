@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.partcptAgre.PartcptAgre">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.partcptAgre.PartcptAgre">
+        <result property="task.taskId"              column="TASK_ID"/>
+        <result property="user.userId"              column="USER_ID"/>
+        <result property="agreYn"                  column="AGRE_YN"/>
+        <result property="register.userId"         column="REGISTER_ID"/>
+        <result property="registDttm"               column="REGIST_DTTM"/>
+    </resultMap>
+
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+        TASK_ID
+        ,USER_ID
+        ,AGRE_YN
+        ,REGISTER_ID
+        ,REGIST_DTTM
+    </sql>
+    <sql id="tables">
+        T_PARTCPT_AGRE
+    </sql>
+    <sql id="keyCriterion">
+        TASK_ID = #{task.taskId}
+        AND USER_ID = #{user.userId}
+    </sql>
+    <sql id="searchCriterion">
+        <if test="taskId != null and taskId != ''">
+            AND TASK_ID = #{taskId}
+        </if>
+        <if test="userId != null and userId != ''">
+            AND USER_ID = #{userId}
+        </if>
+    </sql>
+    <sql id="searchOrder">
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.partcptAgre.PartcptAgre" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.partcptAgre.PartcptAgreCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.partcptAgre.PartcptAgreCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.partcptAgre.PartcptAgreCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.partcptAgre.PartcptAgre" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.partcptAgre.PartcptAgre">
+        INSERT INTO T_PARTCPT_AGRE
+        (
+            TASK_ID
+            ,USER_ID
+            ,AGRE_YN
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{task.taskId}
+            ,#{user.userId}
+            ,#{agreYn}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.partcptAgre.PartcptAgre">
+        UPDATE 
+            T_PARTCPT_AGRE
+        SET
+            AGRE_YN=#{agreYn}
+            ,UPDUSR_ID=#{loginInfo.id}
+            ,UPDT_DTTM=CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    <delete id="delete" parameterType="ins.aifactory.service.partcptAgre.PartcptAgre">
+        DELETE FROM T_PARTCPT_AGRE
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        DELETE FROM T_PARTCPT_AGRE
+    </delete>
+
+</mapper>

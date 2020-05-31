@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<aop:aspectj-autoproxy/>
+	
+<!--     <bean id="loggingAspect" class="ins.comp.core.aspect.LoggingAspect" /> -->
+    
+<!--     <aop:config> -->
+<!--         <aop:aspect ref="loggingAspect"> -->
+<!--             <aop:pointcut id="loggingAspectPointCut" expression="execution(* ins.inops..*Controller.*(..)) or execution(* ins.web..*Controller.*(..)) or execution(* ins.comp..*Api.*(..)) or execution(* ins.comp..*Service.*(..)) or execution(* egovframework.rte..EgovAbstractMapper.*(..))"/> -->
+<!--             <aop:around pointcut-ref="loggingAspectPointCut" method="doLayerLoggingAround"/> -->
+<!--         </aop:aspect> -->
+<!--     </aop:config> -->
+
+</beans>

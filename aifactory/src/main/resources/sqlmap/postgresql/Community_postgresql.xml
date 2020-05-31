@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.community.Post">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.community.Post">
+        <result property="postCt"               column="POST_CT"/>
+        <result property="postId"               column="POST_ID"/>
+        <result property="postNm"               column="POST_NM"/>
+        <result property="postDc"               column="POST_DC"/>
+        <result property="cmmnFile.atchFileId"  column="ATCH_FILE_ID"/>    
+        <result property="register.userId"      column="REGISTER_ID"/>
+        <result property="registDttm"           column="REGIST_DTTM"/>
+        <result property="updusr.userId"        column="UPDUSR_ID"/>
+        <result property="updtDttm"             column="UPDT_DTTM"/>
+        <collection property="cmmnFile.files" column="ATCH_FILE_ID" javaType="java.util.ArrayList" ofType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetail" select="getFileDetail"/>
+    </resultMap>
+    
+    <sql id="columns">
+       POST_CT
+        ,POST_ID
+        ,POST_NM
+        ,POST_DC
+        ,ATCH_FILE_ID
+        ,(SELECT FILE_STRE_COURS FROM T_CMMN_FILE_DETAIL WHERE ATCH_FILE_ID=T.ATCH_FILE_ID ORDER BY FILE_SN ASC LIMIT 1) AS FILE_STRE_COURS
+        ,(SELECT STRE_FILE_NM FROM T_CMMN_FILE_DETAIL WHERE ATCH_FILE_ID=T.ATCH_FILE_ID ORDER BY FILE_SN ASC LIMIT 1) AS STRE_FILE_NM
+        ,REGISTER_ID
+        ,REGIST_DTTM
+        ,UPDUSR_ID
+        ,UPDT_DTTM
+    </sql>
+    <sql id="searchCriterion">
+        <if test="mode != null and mode=='business'">
+            AND POST_CT = 'business'
+        </if>
+        <if test="mode != null and mode=='techblog'">
+            AND POST_CT = 'techblog'
+        </if>
+    </sql>
+    <sql id="tables">
+        T_COMMUNITY T 
+    </sql>
+    <sql id="keyCriterion">
+        POST_ID = #{postId}
+    </sql>
+    <sql id="searchOrder">
+        REGIST_DTTM DESC
+    </sql>
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    
+    <insert id="insert" parameterType="ins.aifactory.service.community.Post">
+        INSERT INTO T_community
+        (
+           POST_CT
+            ,POST_ID
+            ,POST_NM
+            ,POST_DC
+            ,ATCH_FILE_ID
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{postCt}
+            ,#{postId}
+            ,#{postNm}
+            ,#{postDc}
+            ,#{cmmnFile.atchFileId}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+    <select id="search" parameterType="ins.aifactory.service.community.PostCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    <select id="searchAll" parameterType="ins.aifactory.service.community.PostCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.community.PostCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    <select id="detail" parameterType="ins.aifactory.service.community.Post" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    <select id="getFileDetail" resultType="ins.aifactory.service.cmmnFileDetail.CmmnFileDetail">
+        SELECT
+            ATCH_FILE_ID, FILE_SN, FILE_STRE_COURS, STRE_FILE_NM, ORIGNL_FILE_NM
+        FROM T_CMMN_FILE_DETAIL
+        WHERE ATCH_FILE_ID = #{atchFileId}
+    </select>
+    <update id="update" parameterType="ins.aifactory.service.community.Post">
+        UPDATE 
+            T_COMMUNITY
+        SET
+            POST_NM=#{postNm}
+            ,POST_DC=#{postDc}
+            ,ATCH_FILE_ID=#{cmmnFile.atchFileId}
+            ,UPDUSR_ID=#{loginInfo.id}
+            ,UPDT_DTTM=CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    <delete id="delete" parameterType="ins.aifactory.service.community.Post">
+        DELETE FROM T_COMMUNITY
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+</mapper>

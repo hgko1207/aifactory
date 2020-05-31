@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+    
+	<tlib-version>1.0</tlib-version>
+  	<short-name>Authorization Check Tag</short-name>
+  	<description>
+    	Authorization Check Tag Definition
+  	</description>
+  
+  	<tag>
+    	<name>isAccess</name>
+    	<tag-class>ins.web.tag.AuthorizationIsAccessTag</tag-class>
+    	<body-content>scriptless</body-content>
+    	<description>Check Menu is accessible</description>
+    	<attribute>
+      		<name>menuPath</name>
+      		<required>true</required>
+      		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+    	<attribute>
+      		<name>authCode</name>
+      		<required>true</required>
+      		<rtexprvalue>true</rtexprvalue>
+      	</attribute>
+  	</tag>
+    <tag>
+        <name>isNotAccess</name>
+        <tag-class>ins.web.tag.AuthorizationIsNotAccessTag</tag-class>
+        <body-content>scriptless</body-content>
+        <description>Check Menu is not accessible</description>
+        <attribute>
+            <name>menuPath</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>authCode</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>getSystemPath</name>
+        <tag-class>ins.web.tag.PermitPathTag</tag-class>
+        <body-content>scriptless</body-content>
+        <description>Get Permit Menu Path</description>
+        <attribute>
+            <name>sysCode</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+  	
+</taglib>

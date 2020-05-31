@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Profile Prod Configuration -->
+<Configuration>
+    <Properties>
+        <Property name="logPath">/var/log/tomcat8/</Property>
+        <Property name="logFilename">aifactory</Property>
+        <Property name="logPythonFilename">python</Property>
+    </Properties>
+    
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %5p [%c] %m%n" />
+        </Console>
+        
+        <!-- Rolling File Appender -->
+        <RollingFile name="file" fileName="${logPath}/${logFilename}.log"
+                filePattern="${logPath}/${logFilename}_%d{yyyyMMddHH}.log">
+                <!--  filePattern="${logPath}/$${date:yyyy}/$${date:MM}/$${date:dd}/${name}_%d{yyyyMMddHH}.log"> -->
+            <PatternLayout>
+                <pattern>%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- Rotated everyday -->
+                <TimeBasedTriggeringPolicy />   
+            </Policies>
+        </RollingFile>
+        
+        <!-- Python Rolling File Appender -->
+        <RollingFile name="pyFile" fileName="${logPath}/${logPythonFilename}.log"
+                filePattern="${logPath}/${logPythonFilename}_%d{yyyyMMddHH}.log">
+                <!--  filePattern="${logPath}/$${date:yyyy}/$${date:MM}/$${date:dd}/${name}_%d{yyyyMMddHH}.log"> -->
+            <PatternLayout>
+                <pattern>%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- Rotated everyday -->
+                <TimeBasedTriggeringPolicy />   
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="egovframework" level="INFO" additivity="false">
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="jdbc.sqltiming" level="DEBUG" additivity="false">
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="org.springframework" level="INFO" additivity="false">
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="java.sql" level="DEBUG" additivity="false">
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="ins" level="DEBUG" additivity="false">
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="python" level="DEBUG" additivity="false">
+            <AppenderRef ref="pyFile" />
+        </Logger>
+        <Root level="ERROR">
+            <AppenderRef ref="file" />
+        </Root>
+    </Loggers>
+</Configuration>

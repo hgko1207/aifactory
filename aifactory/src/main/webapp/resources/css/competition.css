@@ -1,0 +1,210 @@
+/*******************************************************************************************************
+ ����Ʈ ������
+*******************************************************************************************************/
+.table-image {
+	height: 80px;
+    width: 80px;
+    max-width: 80px;
+}
+
+/*******************************************************************************************************
+ �� ���� ������
+*******************************************************************************************************/
+.competition-header__top {
+    border: 1px solid #dedfe0;
+    border-radius: 4px 4px 0 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #fff;
+    position: relative;
+}
+
+.pageheader__top--safe {
+    position: relative;
+}
+
+.competition-header__top-image {
+	/* background-image: url(https://storage.googleapis.com/kaggle-competitions/kaggle/9933/logos/header.png?t=2018-08-22-18-55-34); */
+	background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 0;
+}
+
+.competition-header__top-image:before {
+    background: -webkit-gradient(linear,left top,left bottom,color-stop(60%,rgba(0,0,0,.3)),to(rgba(0,0,0,.5)));
+    background: linear-gradient(180deg,rgba(0,0,0,.3) 60%,rgba(0,0,0,.5));
+    border-radius: 4px 4px 0 0;
+    bottom: 0;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.competition-header__meta {
+    padding: 45px 10px;
+}
+
+.competition-header__title {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.25;
+    margin-bottom: 8px !important;
+}
+
+.competition-header__subtitle {
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.competition-header__prize {
+	padding-right: 10px;
+}
+
+.competition-header__prize-value {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.competition-header__prize-text {
+    font-size: 14px;
+}
+
+.competition-header__details, .competition-header__details--no-org {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: .5px;
+    padding: 0px 30px 15px;
+}
+
+.competition-header__org-thumbnail-image {
+    border-radius: 3px;
+    height: 20px;
+    vertical-align: bottom;
+}
+
+/*******************************************************************************************************
+ Sub Header ������
+*******************************************************************************************************/
+.navbar {
+	align-items: center;
+}
+
+.breadcrumb-line {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+.navbar-component {
+	border: 0 !important;
+	margin: 0 !important;
+	width: 100%;
+}
+
+.navbar-light .active>.navbar-nav-link, 
+.navbar-light .navbar-nav-link.active, 
+.navbar-light .navbar-nav-link.show, 
+.navbar-light .show>.navbar-nav-link {
+	color: #0000ff;
+    border-bottom: 1px solid #0000ff;
+}
+
+.navbar-light .navbar-nav-link:focus, .navbar-light .navbar-nav-link:hover {
+	background-color: rgba(0,0,0,.04);
+}
+
+/*******************************************************************************************************
+ ���� ������
+*******************************************************************************************************/
+.overview .card-body {
+	padding: 0;
+}
+
+.discussion .card-body {
+	padding: 0.75rem 1.25rem;
+}
+
+.nav-tabs {
+	border-right: 1px solid #ddd;
+	padding: 1.25rem 0;
+}
+
+.nav-tabs .nav-link {
+	font-size: 15px;
+}
+
+.nav-tabs-vertical .nav-item.show .nav-link, .nav-tabs-vertical .nav-link.active {
+	color: #0a6ebd;
+	font-weight: 500;
+}
+
+.nav-tabs .nav-link {
+	border-right: 0;
+}
+
+.tab-content {
+	padding: 1.25rem 0;
+    margin: 0px 24px 16px 12px;
+    min-width: 0;
+}
+
+/*******************************************************************************************************
+ ���̺� ������
+*******************************************************************************************************/
+.competition-table__header-row {
+	border-bottom: 1px solid #dedfe0;
+	color: rgba(0,0,0,.5);
+	padding: 8px 16px;
+	font-size: 15px;
+}
+
+.competition-table__header-row th {
+	font-weight: 400;
+}
+
+.competition-table__row {
+	padding: 5px 16px 3px;
+	border-bottom: 1px solid rgba(222,223,224,.5);
+	font-size: 15px;
+}
+
+
+.discussion a.text-default:focus, a.text-default:hover {
+	color: #03a9f4;
+}
+
+/*******************************************************************************************************
+ Discussion ������
+*******************************************************************************************************/
+.discussion-detail-body {
+	padding: 1.4rem 2rem;
+}
+
+.markdown-converter__text--rendered {
+    box-sizing: border-box;
+    color: rgba(0,0,0,.7);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    text-align: left;
+    max-width: 100%;
+    position: relative;
+    word-break: break-word;
+}

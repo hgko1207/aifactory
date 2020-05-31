@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.teamConstnt.TeamConstnt">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.teamConstnt.TeamConstnt">
+        <result property="team.teamSn"      column="TEAM_SN"/>
+        <result property="team.teamNm"      column="TEAM_NM"/>
+        <result property="user.userId"      column="USER_ID"/>
+        <result property="user.userNm"      column="USER_NM"/>
+        <result property="timhderYn"        column="TIMHDER_YN"/>
+        <result property="register.id"      column="REGISTER_ID"/>
+        <result property="registDttm"       column="REGIST_DTTM"/>
+        <result property="updusr.id"        column="UPDUSR_ID"/>
+        <result property="updtDttm"         column="UPDT_DTTM"/>
+    </resultMap>
+
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+        TC.TEAM_SN
+        ,T.TEAM_NM
+        ,TC.USER_ID
+        ,U.USER_NM
+        ,TC.TIMHDER_YN
+        ,TC.REGISTER_ID
+        ,TC.REGIST_DTTM
+        ,TC.UPDUSR_ID
+        ,TC.UPDT_DTTM
+    </sql>
+    <sql id="tables">
+        T_TEAM_CONSTNT TC
+        INNER JOIN T_TEAM T ON TC.TEAM_SN = T.TEAM_SN
+        INNER JOIN T_USER U ON TC.USER_ID = U.USER_ID
+    </sql>
+    <sql id="keyCriterion">
+        TC.TEAM_SN = #{team.teamSn}
+        AND TC.USER_ID = #{user.userId}
+    </sql>
+    <sql id="searchCriterion">
+        
+    </sql>
+    <sql id="searchOrder">
+        TC.REGIST_DTTM DESC
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.teamConstnt.TeamConstnt" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.teamConstnt.TeamConstntCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.teamConstnt.TeamConstntCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.teamConstnt.TeamConstntCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.teamConstnt.TeamConstnt" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.teamConstnt.TeamConstnt">
+        INSERT INTO T_TEAM_CONSTNT
+        (
+           TEAM_SN
+            ,USER_ID
+            ,TIMHDER_YN
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{team.teamSn}
+            ,#{user.userId}
+            ,#{timhderYn}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.teamConstnt.TeamConstnt">
+        UPDATE 
+            T_TEAM_CONSTNT TC
+        SET
+            TIMHDER_YN=#{timhderYn}
+            ,UPDUSR_ID=#{loginInfo.id}
+            ,UPDT_DTTM=CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.teamConstnt.TeamConstnt">
+        DELETE FROM T_TEAM_CONSTNT TC
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        DELETE FROM T_TEAM_CONSTNT TC
+    </delete>
+
+</mapper>

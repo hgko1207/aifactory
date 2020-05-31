@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.qna.Qna">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.qna.Qna">
+        <result property="qnaSn"                column="QNA_SN"/>
+        <result property="task.taskId"          column="TASK_ID"/>
+        <result property="qnaSj"                column="QNA_SJ"/>
+        <result property="qnaCn"                column="QNA_CN"/>
+        <result property="qnaAnswer"            column="QNA_ANSWER"/>
+        <result property="register.userId"      column="REGISTER_ID"/>
+        <result property="register.userNm"      column="REGISTER_NM"/>
+        <result property="registDttm"           column="REGIST_DTTM"/>
+        <result property="updusr.userId"        column="UPDUSR_ID"/>
+        <result property="updtDttm"             column="UPDT_DTTM"/>
+    </resultMap>
+
+<!--      -->
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+        Q.QNA_SN
+        ,Q.TASK_ID
+        ,Q.QNA_SJ
+        ,Q.QNA_CN
+        ,Q.QNA_ANSWER
+        ,Q.REGISTER_ID
+        ,U.USER_NM AS REGISTER_NM
+        ,Q.REGIST_DTTM
+        ,Q.UPDUSR_ID
+        ,Q.UPDT_DTTM
+    </sql>
+    <sql id="tables">
+        T_QNA Q
+        INNER JOIN T_USER U ON Q.REGISTER_ID = U.USER_ID
+    </sql>
+    <sql id="keyCriterion">
+        QNA_SN = #{qnaSn}
+    </sql>
+    <sql id="searchCriterion">
+        <if test="taskId != null and taskId!=''">
+            AND TASK_ID = #{taskId}
+        </if>
+    </sql>
+    <sql id="searchOrder">
+        QNA_SN DESC
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.qna.Qna" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.qna.QnaCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.qna.QnaCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.qna.QnaCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.qna.Qna" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.qna.Qna">
+        <selectKey keyProperty="qnaSn" resultType="Long" order="BEFORE">
+            SELECT CAST(COALESCE(MAX(QNA_SN), '0') AS BIGINT) + 1 AS QNA_SN
+            FROM T_QNA
+        </selectKey> 
+        INSERT INTO T_QNA
+        (
+            QNA_SN
+            ,TASK_ID
+            ,QNA_SJ
+            ,QNA_CN
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{qnaSn}
+            ,#{task.taskId}
+            ,#{qnaSj}
+            ,#{qnaCn}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.qna.Qna">
+        UPDATE 
+            T_QNA
+        SET
+            QNA_SJ=#{qnaSj}
+            ,QNA_CN=#{qnaCn}
+            ,UPDUSR_ID=#{loginInfo.id}
+            ,UPDT_DTTM=CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <update id="updateAnswer" parameterType="ins.aifactory.service.qna.Qna">
+        UPDATE 
+            T_QNA
+        SET
+            QNA_ANSWER=#{qnaAnswer}
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.qna.Qna">
+        DELETE FROM T_QNA
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        DELETE FROM T_QNA
+    </delete>
+
+</mapper>

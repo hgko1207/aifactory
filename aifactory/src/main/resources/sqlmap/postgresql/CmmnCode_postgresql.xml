@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.cmmnCode.CmmnCode">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.cmmnCode.CmmnCode">
+        <result property="cmmnCode"             column="CMMN_CODE" />
+        <result property="cmmnCodeGroup.groupCode"   column="GROUP_CODE" />
+        <result property="cmmnCodeGroup.groupNm"     column="GROUP_NM" />
+        <result property="codeNm"               column="CODE_NM" />
+        <result property="codeDc"               column="CODE_DC" />
+        <result property="sortOrdr"             column="SORT_ORDR" />
+        <result property="deleteYn"             column="DELETE_YN" />
+        <result property="register.userId"      column="REGISTER_ID" />
+        <result property="register.userNm"      column="REGISTER_NM" />
+        <result property="registDttm"           column="REGIST_DTTM" />
+        <result property="updusr.userId"        column="UPDUSR_ID" />
+        <result property="updtDttm"             column="UPDT_DTTM" />
+    </resultMap>
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+        C.CMMN_CODE, C.GROUP_CODE, G.GROUP_NM, C.CODE_NM, C.CODE_DC, C.SORT_ORDR, 
+        C.DELETE_YN, C.REGISTER_ID, C.REGISTER_ID AS REGISTER_NM, C.REGIST_DTTM, C.UPDUSR_ID, C.UPDT_DTTM
+    </sql>
+    <sql id="tables">
+        T_CMMN_CODE C
+        INNER JOIN T_CMMN_CODE_GROUP G ON C.GROUP_CODE = G.GROUP_CODE
+    </sql>
+    <sql id="keyCriterion">
+        C.CMMN_CODE = #{cmmnCode, jdbcType=VARCHAR}
+        AND C.GROUP_CODE = #{cmmnCodeGroup.groupCode}
+    </sql>
+    <sql id="searchCriterion">
+        C.GROUP_CODE = #{cmmnCodeGroup.groupCode}
+        <if test="deleteYn != null and deleteYn != ''">
+            AND C.DELETE_YN = #{deleteYn}
+        </if>
+    </sql>
+    <sql id="searchOrder">
+        C.GROUP_CODE, C.SORT_ORDR
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.cmmnCode.CmmnCode" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.cmmnCode.CmmnCodeCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.cmmnCode.CmmnCodeCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.cmmnCode.CmmnCodeCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.cmmnCode.CmmnCode" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.cmmnCode.CmmnCode">
+        INSERT INTO T_CMMN_CODE
+        (
+            CMMN_CODE
+            , GROUP_CODE
+            , CODE_NM
+            , CODE_DC
+            , SORT_ORDR
+            , DELETE_YN
+            , REGISTER_ID
+            , REGIST_DTTM
+        )
+        VALUES
+        (
+            #{cmmnCode} 
+            , #{cmmnCodeGroup.groupCode}
+            , #{codeNm}  
+            , #{codeDc}  
+            , #{sortOrdr, jdbcType=INTEGER} 
+            , 'N'
+            , #{loginInfo.id} 
+            , CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.cmmnCode.CmmnCode">
+        UPDATE 
+            T_CMMN_CODE C
+        SET
+            CODE_NM = #{codeNm}
+            , CODE_DC = #{codeDc}
+            , DELETE_YN = #{deleteYn}
+            , SORT_ORDR = #{sortOrdr}
+            , UPDUSR_ID = #{loginInfo.id}
+            , UPDT_DTTM = CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.cmmnCode.CmmnCode">
+        UPDATE T_CMMN_CODE C
+        SET
+           DELETE_YN = 'Y'
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        UPDATE T_CMMN_CODE C
+        SET
+           DELETE_YN = 'Y'
+    </delete>
+
+</mapper>

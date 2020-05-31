@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.7.0.201506251244-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>src/main/resources/config/spring/idgn/context-idgn-About.xml</config>
+	</configs>
+	<autoconfigs>
+		<config>src/main/resources/config/spring/idgn/context-idgn-CmmnFile.xml</config>
+		<config>src/main/resources/config/spring/idgn/context-idgn-User.xml</config>
+		<config>src/main/resources/config/spring/context-transaction.xml</config>
+		<config>src/main/webapp/WEB-INF/config/springmvc/servlet-context.xml</config>
+		<config>src/main/resources/config/spring/context-aspect.xml</config>
+		<config>src/main/resources/config/spring/idgn/context-idgn-Task.xml</config>
+		<config>src/main/resources/config/spring/context-scheduler.xml</config>
+		<config>src/main/resources/config/spring/context-security.xml</config>
+		<config>src/main/resources/config/spring/context-common.xml</config>
+		<config>src/main/resources/config/spring/context-datasource.xml</config>
+		<config>src/main/resources/config/spring/context-sqlMap.xml</config>
+	</autoconfigs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

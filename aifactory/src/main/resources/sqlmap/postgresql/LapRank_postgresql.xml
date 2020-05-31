@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.lapRank.LapRank">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.lapRank.LapRank">
+        <result property="lap.task.taskId"          column="TASK_ID"/>
+        <result property="lap.lapSn"                column="LAP_SN"/>
+        <result property="rank"                     column="RANK"/>
+        <result property="money"                    column="MONEY"/>
+        <result property="register.userId"              column="REGISTER_ID"/>
+        <result property="registDttm"               column="REGIST_DTTM"/>
+    </resultMap>
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+        TASK_ID
+        ,LAP_SN
+        ,RANK
+        ,MONEY
+        ,REGISTER_ID
+        ,REGIST_DTTM
+    </sql>
+    <sql id="tables">
+        T_LAP_RANK
+    </sql>
+    <sql id="keyCriterion">
+        TASK_ID = #{lap.task.taskId}
+        AND LAP_SN = #{lap.lapSn}
+        AND RANK = #{rank}
+    </sql>
+    <sql id="searchCriterion">
+        <if test="lap !=null and lap.task != null and lap.task.taskId != null and lap.task.taskId != ''">
+            AND TASK_ID = #{lap.task.taskId}
+        </if>
+        <if test="lap !=null and lap.lapSn != null">
+            AND LAP_SN = #{lap.lapSn}
+        </if>
+    </sql>
+    <sql id="searchOrder">
+        TASK_ID DESC
+        , LAP_SN ASC
+        , RANK ASC
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.lapRank.LapRank" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.lapRank.LapRankCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.lapRank.LapRankCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.lapRank.LapRankCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.lapRank.LapRank" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.lapRank.LapRank">
+        INSERT INTO T_LAP_RANK
+        (
+            TASK_ID
+            ,LAP_SN
+            ,RANK
+            ,MONEY
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{lap.task.taskId}
+            ,#{lap.lapSn}
+            ,#{rank}
+            ,#{money}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.lapRank.LapRank">
+        UPDATE 
+            T_LAP_RANK
+        SET
+            MONEY=#{money}
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.lapRank.LapRank">
+        DELETE FROM T_LAP_RANK
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteByTask" parameterType="ins.aifactory.service.lapRank.LapRank">
+        DELETE FROM T_LAP_RANK
+        WHERE TASK_ID=#{lap.task.taskId}
+    </delete>
+    
+    <delete id="deleteByLap" parameterType="ins.aifactory.service.lapRank.LapRank">
+        DELETE FROM T_LAP_RANK
+        WHERE TASK_ID=#{lap.task.taskId}
+            AND LAP_SN=#{lap.lapSn}
+    </delete>
+    
+    <delete id="deleteAll">
+        DELETE FROM T_LAP_RANK
+    </delete>
+
+</mapper>

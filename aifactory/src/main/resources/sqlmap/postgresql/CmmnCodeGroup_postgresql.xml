@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.cmmnCodeGroup.CmmnCodeGroup">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.cmmnCodeGroup.CmmnCodeGroup">
+        <result property="groupCode"            column="GROUP_CODE"/>
+        <result property="groupNm"              column="GROUP_NM"/>
+        <result property="sortOrdr"             column="SORT_ORDR"/>
+        <result property="deleteYn"             column="DELETE_YN" />
+        <result property="register.userId"      column="REGISTER_ID" />
+        <result property="register.userNm"      column="REGISTER_NM" />
+        <result property="registDttm"           column="REGIST_DTTM" />
+        <result property="updusr.userId"        column="UPDUSR_ID" />
+        <result property="updtDttm"             column="UPDT_DTTM" />
+    </resultMap>
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+       GROUP_CODE
+       , GROUP_NM
+       , SORT_ORDR
+       , DELETE_YN
+       , REGISTER_ID
+       , REGISTER_ID AS REGISTER_NM
+       , REGIST_DTTM
+       , UPDUSR_ID
+       , UPDT_DTTM
+    </sql>
+    <sql id="tables">
+        T_CMMN_CODE_GROUP
+    </sql>
+    <sql id="keyCriterion">
+        GROUP_CODE = #{groupCode}
+    </sql>
+    <sql id="searchCriterion">
+        <if test="groupNmLike != null and groupNmLike != ''">
+            AND GROUP_NM LIKE #{groupNmLike} || '%'
+        </if>
+    </sql>
+    <sql id="searchOrder">
+        SORT_ORDR
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.cmmnCodeGroup.CmmnCodeGroup" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.cmmnCodeGroup.CmmnCodeGroupCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.cmmnCodeGroup.CmmnCodeGroupCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.cmmnCodeGroup.CmmnCodeGroupCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.cmmnCodeGroup.CmmnCodeGroup" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.cmmnCodeGroup.CmmnCodeGroup">
+        INSERT INTO T_CMMN_CODE_GROUP
+        (
+           GROUP_CODE
+           , GROUP_NM
+           , SORT_ORDR
+           , DELETE_YN
+           , REGISTER_ID
+           , REGIST_DTTM
+           , UPDUSR_ID
+           , UPDT_DTTM
+        )
+        VALUES
+        (
+            #{groupCode} 
+            , #{groupNm} 
+            , #{sortOrdr, jdbcType=INTEGER} 
+            , 'N' 
+            , #{loginInfo.id} 
+            , CURRENT_TIMESTAMP
+            , #{loginInfo.id} 
+            , CURRENT_TIMESTAMP  
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.cmmnCodeGroup.CmmnCodeGroup">
+        UPDATE 
+            T_CMMN_CODE_GROUP
+        SET
+            GROUP_NM = #{groupNm}
+            , SORT_ORDR = #{sortOrdr}
+            , DELETE_YN = #{deleteYn}
+            , UPDUSR_ID = #{loginInfo.id}
+            , UPDT_DTTM = CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.cmmnCodeGroup.CmmnCodeGroup">
+        UPDATE T_CMMN_CODE_GROUP
+        SET
+           DELETE_YN = 'Y'
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        UPDATE T_CMMN_CODE_GROUP
+        SET
+           DELETE_YN = 'Y'
+    </delete>
+
+</mapper>

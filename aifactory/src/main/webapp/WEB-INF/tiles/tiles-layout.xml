@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+    
+<tiles-definitions>
+
+    <!-- # S : Template ####################################################################################################### -->
+    <!-- Main  -->
+    <definition name=".tmplt_main" template="/WEB-INF/tiles/templates/layout_main_component.jsp">
+        <put-attribute name="title" value="AI Factory" type="string" />
+        <put-attribute name="head" value="/WEB-INF/tiles/templates/main/head.jsp" />
+        <put-attribute name="header" value="/WEB-INF/tiles/templates/main/header.jsp" />
+        <put-attribute name="body-middle" />
+        <put-attribute name="footer" value="/WEB-INF/tiles/templates/main/footer.jsp" />
+    </definition>
+    
+    <!-- Sub  -->
+    <definition name=".tmplt_sub" template="/WEB-INF/tiles/templates/layout_sub_component.jsp">
+        <put-attribute name="title" value="AI Factory" type="string" />
+        <put-attribute name="head" value="/WEB-INF/tiles/templates/main/head.jsp" />
+        <put-attribute name="header" value="/WEB-INF/tiles/templates/main/header.jsp" />
+        <put-attribute name="body-middle" />
+        <put-attribute name="footer" value="/WEB-INF/tiles/templates/main/footer.jsp" />
+    </definition>
+    
+    <!-- One -->
+    <definition name=".tmplt_one" template="/WEB-INF/tiles/templates/layout_one_component.jsp">
+        <put-attribute name="title" value="AI Factory" type="string" />
+        <put-attribute name="head" value="/WEB-INF/tiles/templates/one/head.jsp" />
+        <put-attribute name="body-middle" />
+    </definition>
+    <!-- # E : Template ####################################################################################################### -->
+    
+    <!-- # S : URL Mapping ############################################################################################ -->
+    <!-- Main  -->
+    <definition name="tls/main/*/*" extends=".tmplt_main">
+        <put-attribute name="body-middle" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+    </definition>
+    
+    <!-- Sub  -->
+    <definition name="tls/sub/*/*" extends=".tmplt_sub">
+        <put-attribute name="subHeader" value="/WEB-INF/tiles/templates/main/subHeader.jsp" />
+        <put-attribute name="body-middle" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+    </definition>
+    
+    <!-- One  -->
+    <definition name="tls/one/*/*" extends=".tmplt_one">
+        <put-attribute name="body-middle" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+    </definition>
+  
+    <!-- 
+    <definition name="tls/main/community/main" extends=".tmplt_main">
+        <put-attribute name="body-middle" value="/WEB-INF/jsp/community/communitymain.jsp"/>
+    </definition>
+    <definition name="tls/main/business/main" extends=".tmplt_main">
+        <put-attribute name="body-middle" value="/WEB-INF/jsp/business/businessmain.jsp"/>
+    </definition>
+    <definition name="tls/main/about/main" extends=".tmplt_main">
+        <put-attribute name="body-middle" value="/WEB-INF/jsp/about/aboutmain.jsp"/>
+    </definition>
+     -->
+    <!-- # E : URL Mapping ############################################################################################ -->
+    
+    
+    
+    
+    
+</tiles-definitions>

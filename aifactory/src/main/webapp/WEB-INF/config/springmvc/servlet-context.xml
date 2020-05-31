@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+
+    <context:component-scan base-package="ins">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+    </context:component-scan>
+    
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/resources/**" />
+            <bean id="loggingInterceptor" class="ins.core.web.intercepter.LoggingInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+    
+    <aop:aspectj-autoproxy/>
+    
+    <!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+        up static resources in the ${webappRoot}/resources directory -->
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+    
+    <!-- 유효성 검증 빈 등록 -->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
+    
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" p:order="0" /> 
+    
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="webBindingInitializer">
+            <bean class="ins.core.web.InsWebBindingInitializer"/>
+        </property>
+        <property name="messageConverters">
+            <list>    
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html;charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>            
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter ">
+                    <property name="objectMapper" ref="objectMapper"></property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    
+    <bean name="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"></bean>
+    
+    <bean id="exceptionHandlerExceptionResolver"
+            class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" />
+    
+    <!-- View Resolver -->
+    <!-- 0. BeanName ViewResolver  -->
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0"/>
+    
+    <!-- 1. Tiles ViewResolver  -->
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" 
+        p:order="1"
+        p:viewClass="org.springframework.web.servlet.view.tiles3.TilesView" />
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+        <property name="definitions">
+            <list>
+                 <value>/WEB-INF/tiles/tiles-layout.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 2. JSP ViewResolver  -->
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="2"
+          p:viewClass="org.springframework.web.servlet.view.JstlView"
+          p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
+    
+    <!-- Views -->
+    <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+    </bean>
+    
+    <bean id="download" class="ins.core.web.view.MultipartFileView">
+        <property name="download" value="true"/>
+        <property name="multipartFileHandler" ref="multipartFileHandler"/>
+    </bean>
+    <bean id="stream" class="ins.core.web.view.MultipartFileView">
+        <property name="download" value="false"/>
+        <property name="multipartFileHandler" ref="multipartFileHandler"/>
+    </bean>
+
+</beans>

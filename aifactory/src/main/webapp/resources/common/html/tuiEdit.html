@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TUI Editor</title>
+
+<!-- Editor's Dependencies -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+<!-- Editor -->
+<link rel="stylesheet" href="../../tui-editor/dist/tui-editor.css">
+<link rel="stylesheet" href="../../tui-editor/dist/tui-editor-contents.css">
+
+<script src="../../limitless/js/main/jquery.min.js"></script>
+<script src="../../tui-editor/dist/tui-editor-Editor-full.js"></script>
+
+<script>
+var contextName;
+var editor;
+var mdVal, htmlVal;
+$( document ).ready(function() {
+    editor = new tui.Editor({
+        el: document.querySelector('#editSection'),
+        previewStyle: 'vertical',
+        height: '450px',
+        initialEditType: 'markdown',
+        hooks: {
+            addImageBlobHook: function (blob, callback) {
+                var formData = new FormData();
+                formData.append('files', blob);
+                $.ajax({
+                    type: "POST",
+                    async: true,
+                    url:contextName + '/file/uploadImageAndGetUrl.do',
+                    dataType: 'json',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data){
+                        callback(data.uploadedImageURL, data.orignlFileNm);
+                        return false;
+                    }
+                });
+                
+            }
+        }
+      });
+});
+
+function refreshContent(){
+    if( editor == null ){
+        setTimeout('refreshContent()', 1000);
+    }else{
+        editor.setHtml(htmlVal);
+    }
+}
+
+function setMarkDownData(data){
+   mdVal = data;
+}
+
+function setHtml(data){
+   htmlVal = data;
+}
+</script>
+</head>
+<body>
+<div id="editSection"></div>
+</body>
+</html>

@@ -1,0 +1,174 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "tui-editor",
+        "scope": null,
+        "escapedName": "tui-editor",
+        "name": "tui-editor",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\Administrator"
+    ]
+  ],
+  "_from": "tui-editor@latest",
+  "_hasShrinkwrap": false,
+  "_id": "tui-editor@1.4.10",
+  "_inCache": true,
+  "_location": "/tui-editor",
+  "_nodeVersion": "10.17.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/tui-editor_1.4.10_1576132995262_0.6926635808056085"
+  },
+  "_npmUser": {
+    "name": "nhnent",
+    "email": "dl_javascript@nhn.com"
+  },
+  "_npmVersion": "6.11.3",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "tui-editor",
+    "scope": null,
+    "escapedName": "tui-editor",
+    "name": "tui-editor",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/tui-editor/-/tui-editor-1.4.10.tgz",
+  "_shasum": "c69ac15842f819274857f184300d24f0a5ed6717",
+  "_shrinkwrap": null,
+  "_spec": "tui-editor",
+  "_where": "C:\\Users\\Administrator",
+  "author": {
+    "name": "NHN FE Development Lab",
+    "email": "dl_javascript@nhn.com",
+    "url": "https://nhn.github.io/tui.editor/"
+  },
+  "bugs": {
+    "url": "https://github.com/nhn/tui.editor/issues"
+  },
+  "dependencies": {
+    "@types/codemirror": "0.0.71",
+    "@types/jquery": "^3.3.29",
+    "@types/markdown-it": "0.0.7",
+    "codemirror": "^5.48.4",
+    "highlight.js": "^9.12.0",
+    "jquery": "^3.3.1",
+    "markdown-it": "^9.0.0",
+    "plantuml-encoder": "^1.2.5",
+    "resize-observer-polyfill": "^1.5.0",
+    "squire-rte": "github:seonim-ryu/Squire#fd40b4e3020845825701e9689f190bab3f4775d4",
+    "to-mark": "^1.1.9",
+    "tui-chart": "^3.7.0",
+    "tui-code-snippet": "^1.5.0",
+    "tui-color-picker": "^2.2.1"
+  },
+  "description": "GFM  Markdown Wysiwyg Editor - Productive and Extensible",
+  "devDependencies": {
+    "@toast-ui/release-notes": "^2.0.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.1.2",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-istanbul": "^4.1.6",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "clean-css": "^4.2.1",
+    "copy-webpack-plugin": "^5.0.4",
+    "cross-env": "^5.1.3",
+    "eslint": "^5.12.0",
+    "eslint-config-tui": "^2.2.0",
+    "eslint-loader": "^3.0.0",
+    "istanbul-instrumenter-loader": "^3.0.0",
+    "jasmine-core": "^2.5.2",
+    "karma": "^2.0.4",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-cli": "^1.0.1",
+    "karma-coverage": "^1.1.2",
+    "karma-edge-launcher": "^0.4.2",
+    "karma-firefox-launcher": "^1.1.0",
+    "karma-ie-launcher": "^1.0.0",
+    "karma-jasmine": "^1.1.1",
+    "karma-jasmine-ajax": "^0.1.13",
+    "karma-jasmine-jquery": "^0.1.1",
+    "karma-junit-reporter": "^1.2.0",
+    "karma-narrow-reporter": "^2.0.1",
+    "karma-remap-coverage": "^0.1.4",
+    "karma-safari-launcher": "^1.0.0",
+    "karma-sauce-launcher": "^1.2.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webdriver-launcher": "github:nhn/karma-webdriver-launcher#v1.2.0",
+    "karma-webpack": "^4.0.2",
+    "safe-umd-webpack-plugin": "0.0.2",
+    "terser-webpack-plugin": "^2.2.1",
+    "testcafe": "^0.23.3",
+    "testcafe-browser-provider-saucelabs": "^1.3.0",
+    "tslint": "^5.12.0",
+    "typescript": "^3.2.2",
+    "webpack": "^4.40.2",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.1.11"
+  },
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-fET8etzvxTm0cFa7C8cbDFkPZ8R9s/oWVRr4i7Z1QKk4YkmY/hDjrdtWPXuIOy4/IzCWQHnv4TmnyVZmAbuG5Q==",
+    "shasum": "c69ac15842f819274857f184300d24f0a5ed6717",
+    "tarball": "https://registry.npmjs.org/tui-editor/-/tui-editor-1.4.10.tgz",
+    "fileCount": 32,
+    "unpackedSize": 21924821,
+    "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJd8eGECRA9TVsSAnZWagAAfFMP/2OHDILU3gNkAIVC4AJh\nLAXv/xKpgRXMRxnkq8BikGbknQFClbDpEblOmRp2AiAQgtx+SoxTHnTMhjJT\n8AvOrDAsAaZHAfYsbCbrglkS4qjfUh2dBeub2gq8Pf2ZCQY6EQ5EOVDarcYh\nOxdRzQ+oIlsTAUIVWbXxOiCD2xGyM9ryDLA8bX7jSliDH1jN3T88ZfuMBKuq\nleNv0fhpBuE/SNymbSoLiOwnPmHHw9A+Idpid7i1RfGRavl10RtWQvzYpMLR\nkO9+5vJqURJ1l6SXOzRf4y/XoZCy04zZyKdI2agOA1H4XwgqA8i+4bIokxCr\ncJQ3BrAaMdKUreXTnb4TkwPrraFbOduIO/496ZGOLoDUqcomHvWKZSmrpJw/\nZKVze1a9XQQW0rsiHTqVBH5Q4ySU45ByzhLMDhf2VmxG0AiAyJNMPXdcmtOi\nqLkcI8CdUgnS06gcGtEw6PLbKBtxxAtOVZCawvjACwfrlhEqFASZunbdSKfv\nhNH/ul0LlkcvVHcN7R4L/SAYhHQHj/48H8lGAMPiljXnMvY3nrdPEPnuomZY\nd+JkctlshskXlOGuw7CgRAnx191Mf87tlFfjH90ojCIdLKWl0AUfvqkzofpz\noOJ1SWR7jQRylHl/EtWYb9SPm0nNuJMoT/FFJ/ErmkNlAKUtsVLuJnTjXp9d\np5Eh\r\n=AbnF\r\n-----END PGP SIGNATURE-----\r\n"
+  },
+  "gitHead": "1516e0e3731645ad1bdd82c20b1b33b92bd584f2",
+  "homepage": "https://github.com/nhn/tui.editor",
+  "keywords": [
+    "toast",
+    "ui",
+    "tui",
+    "markdown",
+    "wysiwyg",
+    "editor",
+    "preview",
+    "gfm",
+    "jquery-plugin"
+  ],
+  "license": "MIT",
+  "main": "dist/tui-editor-Editor.js",
+  "maintainers": [
+    {
+      "name": "nhnent",
+      "email": "dl_javascript@nhnent.com"
+    }
+  ],
+  "name": "tui-editor",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhn/tui.editor.git"
+  },
+  "scripts": {
+    "build": "cross-env webpack --mode=production && webpack --mode=production --minify && node tsBannerGenerator.js",
+    "doc": "tuidoc",
+    "doc:serve": "tuidoc --serv",
+    "e2e": "testcafe chrome 'test/e2e/**/*.spec.js'",
+    "e2e:sl": "testcafe \"saucelabs:Chrome@65.0:Windows 10,saucelabs:Firefox@59.0:Windows 10,saucelabs:Safari@10.0:OS X 10.11,saucelabs:Internet Explorer@11.103:Windows 10,saucelabs:MicrosoftEdge@16.16299:Windows 10\" 'test/e2e/**/*.spec.js'",
+    "lint": "eslint .",
+    "note": "tui-note --tag=$(git describe --tags)",
+    "serve": "webpack-dev-server",
+    "test": "karma start",
+    "test:lh": "cross-env SERVER=localhost karma start",
+    "test:ne": "cross-env SERVER=nhnent karma start",
+    "test:sl": "cross-env SERVER=saucelabs karma start",
+    "test:types": "tsc --project test/types",
+    "tslint": "tslint index.d.ts"
+  },
+  "version": "1.4.10"
+}

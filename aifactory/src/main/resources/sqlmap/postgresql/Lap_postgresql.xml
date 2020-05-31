@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.lap.Lap">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.lap.Lap">
+        <result property="task.taskId"              column="TASK_ID"/>
+        <result property="task.taskNm"              column="TASK_NM"/>
+        <result property="lapSn"                    column="LAP_SN"/>
+        <result property="lapEndCndCode.cmmnCode"   column="LAP_END_CND_CODE"/>
+        <result property="lapEndCndCode.codeNm"     column="LAP_END_CND_CODE_NM"/>
+        <result property="chkPnttmCycle"            column="CHK_PNTTM_CYCLE"/>
+        <result property="goalScre"                 column="GOAL_SCRE"/>
+        <result property="actvtyYn"                 column="ACTVTY_YN"/>
+        <result property="achivYn"                  column="ACHIV_YN"/>
+        <result property="beginDttm"                column="BEGIN_DTTM"/>
+        <result property="endDttm"                  column="END_DTTM"/>
+        <result property="register.userId"              column="REGISTER_ID"/>
+        <result property="registDttm"               column="REGIST_DTTM"/>
+        <result property="updusr.userId"                column="UPDUSR_ID"/>
+        <result property="updtDttm"                 column="UPDT_DTTM"/>
+    </resultMap>
+
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+        L.TASK_ID
+        --,T.TASK_NM
+        ,L.LAP_SN
+        ,L.LAP_END_CND_CODE
+        --,C.CODE_NM AS LAP_END_CND_CODE_NM
+        ,L.CHK_PNTTM_CYCLE
+        ,L.GOAL_SCRE
+        ,L.ACTVTY_YN
+        ,L.ACHIV_YN
+        ,L.BEGIN_DTTM
+        ,L.END_DTTM
+        ,L.REGISTER_ID
+        ,L.REGIST_DTTM
+        ,L.UPDUSR_ID
+        ,L.UPDT_DTTM
+    </sql>
+    <sql id="tables">
+        T_LAP L
+        INNER JOIN T_TASK T ON L.TASK_ID = T.TASK_ID
+        INNER JOIN T_CMMN_CODE C ON L.LAP_END_CND_CODE = C.CMMN_CODE AND C.GROUP_CODE = '1000'
+    </sql>
+    <sql id="keyCriterion">
+        L.TASK_ID = #{task.taskId}
+        AND L.LAP_SN = #{lapSn}
+    </sql>
+    <sql id="searchCriterion">
+        <if test="taskId != null and taskId != ''">
+            AND L.TASK_ID = #{taskId}
+        </if>
+        <if test="lapSn != null">
+            AND L.LAP_SN = #{lapSn}
+        </if>
+        <if test="actvtyYn != null and actvtyYn != ''">
+            AND L.ACTVTY_YN = #{actvtyYn}
+        </if>
+    </sql>
+    <sql id="searchOrder">
+        L.TASK_ID DESC
+        , L.LAP_SN ASC
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.lap.Lap" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.lap.LapCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.lap.LapCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.lap.LapCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.lap.Lap" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- 종료될 랩 리스트 -->
+    <select id="searchEndLap" parameterType="string" resultMap="resultMap">
+        <![CDATA[
+        WITH WT_END_DTTM_CND AS (
+            SELECT TASK_ID, LAP_SN
+            FROM T_LAP
+            WHERE
+                END_DTTM <= CURRENT_DATE
+                AND ACTVTY_YN = 'Y'
+        ),
+        WT_LAP_CHK AS (
+            SELECT T.TASK_ID, L.LAP_SN, MOD(EXTRACT(EPOCH FROM (TO_TIMESTAMP(TO_CHAR(now(), 'YYYY-MM-DD HH24:MI'), 'YYYY-MM-DD HH24:MI')-T.BEGIN_DTTM))::BIGINT, L.CHK_PNTTM_CYCLE*60*60) AS CHK
+            FROM T_LAP L
+                INNER JOIN T_TASK T ON T.TASK_ID = L.TASK_ID
+            WHERE L.ACTVTY_YN='Y'
+        ),
+        WT_GOAL_SCORE_CND AS (
+            SELECT LA.TASK_ID, LA.LAP_SN
+            FROM T_LAP_ADHRNC LA
+                INNER JOIN T_LAP L ON L.TASK_ID = LA.TASK_ID AND L.LAP_SN = LA.LAP_SN
+                INNER JOIN WT_LAP_CHK WL ON L.TASK_ID = WL.TASK_ID AND L.LAP_SN = WL.LAP_SN
+            WHERE
+                L.GOAL_SCRE > 0
+                AND L.GOAL_SCRE <= LA.SCRE
+                AND WL.CHK = 0
+                AND L.ACTVTY_YN = 'Y'
+            GROUP BY LA.TASK_ID, LA.LAP_SN
+        ),
+        WT_UNION AS (
+            SELECT TASK_ID, LAP_SN
+            FROM WT_END_DTTM_CND
+            
+            UNION
+            
+            SELECT TASK_ID, LAP_SN
+            FROM WT_GOAL_SCORE_CND
+        )
+        SELECT *
+        FROM WT_UNION
+        ]]>
+    </select>
+    
+    <!-- 체크대상 랩 리스트 -->
+    <select id="searchChkLap" parameterType="string" resultMap="resultMap">
+        WITH WT_LAP_CHK AS (
+            SELECT TASK_ID, LAP_SN, MOD(EXTRACT(EPOCH FROM (TO_TIMESTAMP(TO_CHAR(now(), 'YYYY-MM-DD HH24:MI'), 'YYYY-MM-DD HH24:MI')-BEGIN_DTTM))::BIGINT, CHK_PNTTM_CYCLE*60*60) AS CHK
+            FROM T_LAP
+            WHERE ACTVTY_YN='Y'
+        )
+        SELECT TASK_ID, LAP_SN
+        FROM WT_LAP_CHK
+        WHERE
+            CHK=0 -- 현재 시간이 체크타임
+    </select>
+    
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.lap.Lap">
+        INSERT INTO T_LAP
+        (
+            TASK_ID
+            ,LAP_SN
+            ,LAP_END_CND_CODE
+            ,CHK_PNTTM_CYCLE
+            ,GOAL_SCRE
+            ,BEGIN_DTTM
+            ,END_DTTM
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{task.taskId}
+            ,#{lapSn}
+            ,#{lapEndCndCode.cmmnCode}
+            ,#{chkPnttmCycle}
+            ,#{goalScre}
+            ,#{beginDttm, jdbcType=TIMESTAMP}
+            ,#{endDttm, jdbcType=TIMESTAMP}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.lap.Lap">
+        UPDATE 
+            T_LAP L
+        SET
+            LAP_END_CND_CODE=#{lapEndCndCode.cmmnCode}
+            ,CHK_PNTTM_CYCLE=#{chkPnttmCycle}
+            ,GOAL_SCRE=#{goalScre}
+            <if test="actvtyYn != null and actvtyYn != ''">
+                ,ACTVTY_YN=#{actvtyYn}
+            </if>
+            <if test="achivYn != null and achivYn != ''">
+                ,ACHIV_YN=#{achivYn}
+            </if>
+            ,BEGIN_DTTM=#{beginDttm, jdbcType=TIMESTAMP}
+            ,END_DTTM=#{endDttm, jdbcType=TIMESTAMP}
+            ,UPDUSR_ID=#{loginInfo.id}
+            ,UPDT_DTTM=CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <!-- Lap End Proc -->
+    <update id="updateEndProc" parameterType="java.util.List">
+        UPDATE T_LAP
+        SET
+            ACTVTY_YN = 'N'
+            , ACHIV_YN = 'Y'
+        WHERE 
+            (TASK_ID, LAP_SN) IN ( 
+                SELECT TASK_ID, LAP_SN
+                FROM (
+                    <foreach item="item" index="index" collection="list" separator="UNION">
+                        SELECT #{item.task.taskId}::text AS TASK_ID, #{item.lapSn}::smallint AS LAP_SN
+                    </foreach>
+                ) T
+            )
+    </update>
+    
+    <!-- Lap Start Proc -->
+    <update id="updateStartProc">
+        <![CDATA[
+        WITH WT_TASK_BEGIN_DTTM AS (
+            /* 진행중인 Task(begin_dttm이 현재 이전) */
+            SELECT TASK_ID
+            FROM T_TASK
+            WHERE
+                BEGIN_DTTM <= CURRENT_DATE AND (END_DTTM > CURRENT_DATE OR END_DTTM IS NULL)
+        ),
+        WT_ACTVTY_LAP AS (
+            /* 진행중인 TASK중 활성화중인(ACTVTY_YN='Y') LAP */
+            SELECT TASK_ID, LAP_SN
+            FROM T_LAP 
+            WHERE
+                TASK_ID IN (SELECT TASK_ID FROM WT_TASK_BEGIN_DTTM)
+                AND ACTVTY_YN='Y'
+        ),
+        WT_NO_ACTVTY_LAP AS(
+            /* 진행중인 TASK중 활성화 대상 LAP */
+            SELECT TASK_ID, MIN(LAP_SN) AS LAP_SN
+            FROM
+                T_LAP
+            WHERE
+                TASK_ID IN (SELECT TASK_ID FROM WT_TASK_BEGIN_DTTM)
+                AND TASK_ID NOT IN (SELECT TASK_ID FROM WT_ACTVTY_LAP)
+                AND ACHIV_YN='N'
+            GROUP BY TASK_ID
+        )
+        UPDATE T_LAP
+        SET
+            ACTVTY_YN = 'Y'
+        WHERE 
+            (TASK_ID, LAP_SN) IN (SELECT TASK_ID, LAP_SN FROM WT_NO_ACTVTY_LAP)
+        ]]>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.lap.Lap">
+        DELETE FROM T_LAP L
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteByTask" parameterType="ins.aifactory.service.lap.Lap">
+        DELETE FROM T_LAP L
+        WHERE TASK_ID = #{task.taskId}
+    </delete>
+    
+    <delete id="deleteAll">
+        DELETE FROM T_LAP
+    </delete>
+
+</mapper>

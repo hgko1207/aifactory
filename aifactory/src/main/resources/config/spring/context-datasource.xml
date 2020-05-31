@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+        
+    <!-- DataSource -->
+    <alias name="dataSource" alias="egov.dataSource" /> 
+    
+    <!-- local -->
+    <beans profile="local">
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="${Globals.local.DriverClassName}"/>
+            <property name="url" value="${Globals.local.Url}" />
+            <property name="username" value="${Globals.local.UserName}"/>
+            <property name="password" value="${Globals.local.Password}"/>
+         </bean>
+    </beans>
+    
+    <!-- dev -->
+    <beans profile="dev">
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="${Globals.dev.DriverClassName}"/>
+            <property name="url" value="${Globals.dev.Url}" />
+            <property name="username" value="${Globals.dev.UserName}"/>
+            <property name="password" value="${Globals.dev.Password}"/>
+         </bean>
+    </beans>
+    
+    <!-- pdv -->
+    <beans profile="pdv">
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="${Globals.pdv.DriverClassName}"/>
+            <property name="url" value="${Globals.pdv.Url}" />
+            <property name="username" value="${Globals.pdv.UserName}"/>
+            <property name="password" value="${Globals.pdv.Password}"/>
+         </bean>
+    </beans>
+    <!-- alpha -->
+    <beans profile="alpha">
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="${Globals.alpha.DriverClassName}"/>
+            <property name="url" value="${Globals.alpha.Url}" />
+            <property name="username" value="${Globals.alpha.UserName}"/>
+            <property name="password" value="${Globals.alpha.Password}"/>
+            <property name="defaultAutoCommit" value="true"/>
+            <property name="initialSize" value="5"/>
+            <property name="maxActive" value="30"/>
+            <property name="maxIdle" value="30"/>
+            <property name="maxWait" value="30000"/>
+            <property name="validationQuery" value="SELECT 1"/>
+            <property name="testOnBorrow" value="true"/>
+            <property name="testOnReturn" value="false"/>
+            <property name="testWhileIdle" value="true"/>
+            <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+         </bean>
+    </beans>
+    <!-- prod -->
+    <beans profile="prod">
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="${Globals.prod.DriverClassName}"/>
+            <property name="url" value="${Globals.prod.Url}" />
+            <property name="username" value="${Globals.prod.UserName}"/>
+            <property name="password" value="${Globals.prod.Password}"/>
+            <property name="defaultAutoCommit" value="true"/>
+            <property name="initialSize" value="5"/>
+            <property name="maxActive" value="30"/>
+            <property name="maxIdle" value="30"/>
+            <property name="maxWait" value="30000"/>
+            <property name="validationQuery" value="SELECT 1"/>
+            <property name="testOnBorrow" value="true"/>
+            <property name="testOnReturn" value="false"/>
+            <property name="testWhileIdle" value="true"/>
+            <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+         </bean>
+    </beans>
+    
+    <!-- DB Pool이 생성이 되더라고 특정 시간 호출되지 않으면 DBMS 설정에 따라 연결을 끊어질 때
+        이 경우 DBCP를 사용하셨다면.. 다음과 같은 설정을 추가하시면 연결을 유지시켜 줍니다. -->
+    <!--
+    <property name="validationQuery" value="select 1 from dual" />
+    <property name="testWhileIdle" value="true" />
+    <property name="timeBetweenEvictionRunsMillis" value="60000" /> -->  <!-- 1분 -->
+
+    <!-- DBCP가 아닌 WAS의 DataSource를 사용하시는 경우도 WAS별로 동일한 설정을 하실 수 있습니다.
+        (WAS별 구체적인 설정은 WAS document 확인) -->
+</beans>

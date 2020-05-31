@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+.menu_banner{
+    background-color:#0088C0;
+    margin-bottom: 30px;
+}
+
+.menu_banner .menu_banner_inside{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.menu_banner .menu_banner_inside .menu_banner_inside_text{
+}
+
+.menu_banner .menu_banner_inside .menu_banner_inside_button{
+    
+}
+
+#notebook-lnav-tab a {
+    box-sizing: border-box;
+    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    padding: 8px 16px 8px 24px;
+    text-decoration: none;
+    text-transform: capitalize;
+    width: 100%;
+    transition: all .1s ease;
+}
+
+#notebook-lnav-tab .active {
+    box-sizing: border-box;
+    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    padding: 8px 16px 8px 24px;
+    width: 100%;
+    transition: all .1s ease;
+    color: #20beff;
+    position: relative;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+.file-footer-buttons button {
+    padding: .625rem .15rem .15rem .15rem;
+}
+
+iframe {    
+    border: 0;
+}

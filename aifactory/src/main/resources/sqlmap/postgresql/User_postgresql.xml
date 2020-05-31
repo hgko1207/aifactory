@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="ins.aifactory.service.user.User">
+
+    <!-- ============================================================= -->
+    <!-- resultMap                                                     -->
+    <!-- ============================================================= -->
+    <resultMap id="resultMap" type="ins.aifactory.service.user.User">
+        <result property="userId"               column="USER_ID"/>
+        <result property="userNm"               column="USER_NM"/>
+        <result property="userEmail"            column="USER_EMAIL"/>
+        <result property="userPwd"              column="USER_PWD"/>
+        <result property="mbtlnum"              column="MBTLNUM"/>
+        <result property="sexdstn"              column="SEXDSTN"/>
+        <result property="brthdy"               column="BRTHDY"/>
+        <result property="useStplatAgreYn"                  column="USE_STPLAT_AGRE_YN"/>
+        <result property="indvdlinfoProcessPolcyAgreYn"     column="INDVDLINFO_PROCESS_POLCY_AGRE_YN"/>
+        <result property="register.userId"      column="REGISTER_ID"/>
+        <result property="registDttm"           column="REGIST_DTTM"/>
+        <result property="updusr.userId"        column="UPDUSR_ID"/>
+        <result property="updtDttm"             column="UPDT_DTTM"/>
+    </resultMap>
+
+    
+    <!-- ============================================================= -->
+    <!-- Query Fragment                                                -->
+    <!-- ============================================================= -->
+    <sql id="columns">
+       USER_ID
+        ,USER_NM
+        ,USER_EMAIL
+        ,MBTLNUM
+        ,SEXDSTN
+        ,BRTHDY
+        ,USE_STPLAT_AGRE_YN
+        ,INDVDLINFO_PROCESS_POLCY_AGRE_YN
+        ,REGISTER_ID
+        ,REGIST_DTTM
+        ,UPDUSR_ID
+        ,UPDT_DTTM
+    </sql>
+    <sql id="tables">
+        T_USER
+    </sql>
+    <sql id="keyCriterion">
+        USER_ID = #{userId}
+    </sql>
+    <sql id="searchCriterion">
+        
+    </sql>
+    <sql id="searchOrder">
+        REGIST_DTTM DESC
+    </sql>
+    
+    <!-- ============================================================= -->
+    <!-- Exist                                                         -->
+    <!-- ============================================================= -->
+    <select id="exist" parameterType="ins.aifactory.service.user.User" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    <select id="chkDuplicateEmail" parameterType="ins.aifactory.service.user.User" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        WHERE
+            USER_EMAIL = #{userEmail}
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Search                                                        -->
+    <!-- ============================================================= -->
+    <select id="searchAll" parameterType="ins.aifactory.service.user.UserCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if>
+    </select>
+    <select id="search" parameterType="ins.aifactory.service.user.UserCriterion" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+        ORDER BY <include refid="searchOrder"/>
+        <if test="pagingInfo.paging == true">
+        LIMIT #{pagingInfo.pageSize} OFFSET #{pagingInfo.offset}
+        </if> 
+    </select>
+    
+    <select id="searchAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+    </select>
+    <select id="searchCount" parameterType="ins.aifactory.service.user.UserCriterion" resultType="int">
+        SELECT COUNT(*)
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="searchCriterion"/>
+        </where>
+    </select>
+    
+    <select id="detail" parameterType="ins.aifactory.service.user.User" resultMap="resultMap">
+        SELECT <include refid="columns"/>
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <select id="getPwd" parameterType="ins.aifactory.service.user.User" resultType="string">
+        SELECT USER_PWD
+        FROM <include refid="tables"/>
+        <where>
+            <include refid="keyCriterion"/>
+        </where>
+    </select>
+    
+    <!-- ============================================================= -->
+    <!-- Insert / Update / Delete                                      -->
+    <!-- ============================================================= -->
+    <insert id="insert" parameterType="ins.aifactory.service.user.User">
+        INSERT INTO T_USER
+        (
+            USER_ID
+            ,USER_NM
+            ,USER_EMAIL
+            ,USER_PWD
+            ,MBTLNUM
+            ,SEXDSTN
+            ,BRTHDY
+            ,USE_STPLAT_AGRE_YN
+            ,INDVDLINFO_PROCESS_POLCY_AGRE_YN
+            ,REGISTER_ID
+            ,REGIST_DTTM
+        )
+        VALUES
+        (
+            #{userId}
+            ,#{userNm}
+            ,#{userEmail}
+            ,#{userPwd}
+            ,#{mbtlnum}
+            ,#{sexdstn}
+            ,#{brthdy}
+            ,#{useStplatAgreYn}
+            ,#{indvdlinfoProcessPolcyAgreYn}
+            ,#{loginInfo.id}
+            ,CURRENT_TIMESTAMP
+        )
+    </insert>
+        
+    <update id="update" parameterType="ins.aifactory.service.user.User">
+        UPDATE 
+            T_USER
+        SET
+            USER_NM=#{userNm}
+            ,USER_EMAIL=#{userEmail}
+            <if test="userPwd != null and userPwd != ''">
+            ,USER_PWD=#{userPwd}
+            </if>
+            ,MBTLNUM=#{mbtlnum}
+            ,SEXDSTN=#{sexdstn}
+            ,BRTHDY=#{brthdy}
+            ,UPDUSR_ID=#{loginInfo.id}
+            ,UPDT_DTTM=CURRENT_TIMESTAMP
+        WHERE <include refid="keyCriterion"/>
+    </update>
+    
+    <delete id="delete" parameterType="ins.aifactory.service.user.User">
+        DELETE FROM T_USER
+        WHERE <include refid="keyCriterion"/>
+    </delete>
+    
+    <delete id="deleteAll">
+        DELETE FROM T_USER
+    </delete>
+
+</mapper>

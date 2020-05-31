@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Profile Dev Configuration -->
+<Configuration>
+    <Properties>
+        <Property name="logPath">/app/inops/logs</Property>
+        <Property name="logFilename">cms</Property>
+    </Properties>
+  
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%c] %m%n" />
+        </Console>
+        
+        <!-- Rolling File Appender -->
+        <RollingFile name="file" fileName="${logPath}/${logFilename}.log"
+                filePattern="${logPath}/${logFilename}_%d{yyyyMMddHH}.log">
+                <!--  filePattern="${logPath}/$${date:yyyy}/$${date:MM}/$${date:dd}/${name}_%d{yyyyMMddHH}.log"> -->
+            <PatternLayout>
+                <pattern>%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- Rotated everyday -->
+                <TimeBasedTriggeringPolicy />   
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="egovframework" level="DEBUG" additivity="false">
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="jdbc.sqltiming" level="DEBUG" additivity="false">
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="org.springframework" level="DEBUG" additivity="false">
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="java.sql" level="DEBUG" additivity="false">
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="ins" level="DEBUG" additivity="false">
+            <AppenderRef ref="file" />
+        </Logger>
+        <Root level="ERROR">
+            <AppenderRef ref="file" />
+        </Root>
+    </Loggers>
+</Configuration>
