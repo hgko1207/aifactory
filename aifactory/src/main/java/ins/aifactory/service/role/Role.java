@@ -7,6 +7,7 @@ public class Role extends EntityInfo {
 	public static final String ROLE_ADMIN = "ADMN";
 	public static final String ROLE_BIZ = "BIZC";
 	public static final String ROLE_USER = "USER";
+	public static final String ROLE_RATER = "RATER";
 
 	private String roleCode;
 	private String roleNm;

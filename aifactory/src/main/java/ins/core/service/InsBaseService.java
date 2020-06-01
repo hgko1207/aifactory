@@ -5,6 +5,7 @@ import java.util.List;
 import ins.core.entity.EntityPage;
 
 public interface InsBaseService <T, C> {
+	
     void insert(T entity);
 
     void update(T entity);

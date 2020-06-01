@@ -21,10 +21,10 @@ import ins.core.service.InsBaseServiceImpl;
  * </pre>
  */
 @Service("UserRoleService")
-public class UserRoleServiceImpl extends InsBaseServiceImpl<UserRole, UserRoleCriterion> implements UserRoleService{
-    
-    public UserRoleServiceImpl() {
-        super(UserRole.class);
-    }
+public class UserRoleServiceImpl extends InsBaseServiceImpl<UserRole, UserRoleCriterion> implements UserRoleService {
+
+	public UserRoleServiceImpl() {
+		super(UserRole.class);
+	}
 
 }

@@ -1,64 +1,77 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ include file="/resources/taglib.jsp"%>
-<c:set var="contextName">${pageContext.request.contextPath}</c:set>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta content="width=device-width, initial-scale=1" name="viewport" />
-<title>AI Factory</title>
-
-<!-- Global stylesheets -->
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/icons/fontawesome/styles.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/layout.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/components.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/colors.min.css" rel="stylesheet" type="text/css">
-<!-- /global stylesheets -->
-
-<link href="${contextName}/resources/css/common.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/css/validation.css" rel="stylesheet" type="text/css">
-
-<!-- Core JS files -->
-<script src="${contextName}/resources/limitless/js/main/jquery.min.js"></script>
-<script src="${contextName}/resources/limitless/js/main/bootstrap.bundle.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/loaders/blockui.min.js"></script>
-<!-- /core JS files -->
-
-<!-- Theme JS files -->
-<script src="${contextName}/resources/limitless/js/plugins/forms/validation/validate.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/forms/styling/uniform.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/tables/datatables/datatables.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/forms/selects/select2.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/uploaders/fileinput/fileinput.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/notifications/sweet_alert.min.js"></script>
-
-<script src="${contextName}/resources/limitless/js/app.js"></script>
-
-<script src="${contextName}/resources/limitless/js/plugins/ui/moment/moment.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/pickers/daterangepicker.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.date.js"></script
-
-<!-- /theme JS files -->
-
-<script src="https://cdn.ckeditor.com/4.11.3/standard/ckeditor.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-<script src="${contextName}/resources/js/common.js"></script>
-<script src="${contextName}/resources/js/table.js"></script> 
-
-<script src="${contextName}/resources/common/js/common_ajax.js"></script>
-<script src="${contextName}/resources/common/js/common_modal.js"></script>
-<script src="${contextName}/resources/common/js/common_stringUtil.js"></script>
-<script src="${contextName}/resources/common/js/common_file.js"></script>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+	<title>AI Factory</title>
+	
+	<c:set var="contextName">${pageContext.request.contextPath}</c:set>
+	
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/icons/fontawesome/styles.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/layout.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/components.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/colors.min.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+	
+	<link href="${contextName}/resources/css/common.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/css/validation.css" rel="stylesheet" type="text/css">
+	
+	<!-- Core JS files -->
+	<script src="${contextName}/resources/limitless/js/main/jquery.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/main/bootstrap.bundle.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/loaders/blockui.min.js"></script>
+	<!-- /core JS files -->
+	
+	<!-- Theme JS files -->
+	<script src="${contextName}/resources/limitless/js/plugins/forms/validation/validate.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/forms/styling/uniform.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/tables/datatables/datatables.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/forms/selects/select2.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/uploaders/fileinput/fileinput.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/notifications/sweet_alert.min.js"></script>
+	
+	<script src="${contextName}/resources/limitless/js/app.js"></script>
+	
+	<script src="${contextName}/resources/limitless/js/plugins/ui/moment/moment.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/pickers/daterangepicker.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.date.js"></script>
+	
+	<!-- /theme JS files -->
+	
+	<script src="https://cdn.ckeditor.com/4.11.3/standard/ckeditor.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
+	<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	
+	<script src="${contextName}/resources/js/common.js"></script>
+	<script src="${contextName}/resources/js/table.js"></script> 
+	
+	<script src="${contextName}/resources/common/js/common_ajax.js"></script>
+	<script src="${contextName}/resources/common/js/common_modal.js"></script>
+	<script src="${contextName}/resources/common/js/common_stringUtil.js"></script>
+	<script src="${contextName}/resources/common/js/common_file.js"></script>
+	
+	<script src="${contextName}/resources/js/plugins/jquery.backstretch.min.js"></script>
+	
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function() {
+			$.backstretch([
+		    	contextName() + "/resources/images/bg1.png",
+		    	contextName() + "/resources/images/bg2.jpg",
+		    	contextName() + "/resources/images/bg3.jpg",
+		    ], {duration: 3000, fade: 750});
+		});
+	</script>
 
 <style>
 .row {

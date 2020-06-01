@@ -1,63 +1,72 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ include file="/resources/taglib.jsp"%>
-<c:set var="contextName">${pageContext.request.contextPath}</c:set>
-
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta content="width=device-width, initial-scale=1" name="viewport" />
-<title>AI Factory</title>
-
-<!-- Global stylesheets -->
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/layout.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/components.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/colors.min.css" rel="stylesheet" type="text/css">
-<!-- /global stylesheets -->
-
-<!-- jQuery-UI CSS -->
-<link rel="stylesheet" href="${contextName}/resources/jquery-ui-1.12.1/jquery-ui.min.css" />
-
-<link href="${contextName}/resources/css/common.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/css/user.css" rel="stylesheet" type="text/css">
-
-<script type="text/javascript">
-// page context 
-function contextName(){
-    return "${contextName}";
-}
-</script>
-
-<!-- Core JS files -->
-<script src="${contextName}/resources/limitless/js/main/jquery.min.js"></script>
-<script src="${contextName}/resources/limitless/js/main/bootstrap.bundle.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/loaders/blockui.min.js"></script>
-<!-- Core JS files -->
-
-<!-- Theme JS files -->
-<script src="${contextName}/resources/limitless/js/plugins/ui/moment/moment.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/pickers/daterangepicker.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.date.js"></script>
-
-<script src="${contextName}/resources/limitless/js/plugins/forms/validation/validate.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/forms/styling/uniform.min.js"></script>
-
-<script src="${contextName}/resources/limitless/js/app.js"></script>
-<!-- jquery-ui -->
-<script src="${contextName}/resources/jquery-ui-1.12.1/jquery-ui.min.js"></script>
-<!-- /theme JS files -->
-
-<script src="${contextName}/resources/common/js/common.js"></script>
-<script src="${contextName}/resources/common/js/common_popup.js"></script>
-
-<script src="${contextName}/resources/js/signup.js"></script>
-
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+	<title>AI Factory</title>
+	
+	<c:set var="contextName">${pageContext.request.contextPath}</c:set>
+	
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/layout.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/components.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/colors.min.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+	
+	<!-- jQuery-UI CSS -->
+	<link rel="stylesheet" href="${contextName}/resources/jquery-ui-1.12.1/jquery-ui.min.css" />
+	
+	<link href="${contextName}/resources/css/common.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/css/user.css" rel="stylesheet" type="text/css">
+	
+	<!-- Core JS files -->
+	<script src="${contextName}/resources/limitless/js/main/jquery.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/main/bootstrap.bundle.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/loaders/blockui.min.js"></script>
+	<!-- Core JS files -->
+	
+	<!-- Theme JS files -->
+	<script src="${contextName}/resources/limitless/js/plugins/ui/moment/moment.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/pickers/daterangepicker.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.date.js"></script>
+	
+	<script src="${contextName}/resources/limitless/js/plugins/forms/validation/validate.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/forms/styling/uniform.min.js"></script>
+	
+	<script src="${contextName}/resources/limitless/js/app.js"></script>
+	<!-- jquery-ui -->
+	<script src="${contextName}/resources/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+	<!-- /theme JS files -->
+	
+	<script src="${contextName}/resources/common/js/common.js"></script>
+	<script src="${contextName}/resources/common/js/common_popup.js"></script>
+	
+	<script src="${contextName}/resources/js/plugins/jquery.backstretch.min.js"></script>
+	
+	<script src="${contextName}/resources/js/signup.js"></script>
+	
+	<script type="text/javascript">
+	// page context 
+	function contextName() {
+	    return "${contextName}";
+	}
+	
+	document.addEventListener('DOMContentLoaded', function() {
+		$.backstretch([
+	    	contextName() + "/resources/images/bg1.png",
+	    	contextName() + "/resources/images/bg2.jpg",
+	    	contextName() + "/resources/images/bg3.jpg",
+	    ], {duration: 3000, fade: 750});
+	});
+	</script>
 <style>
 .row {
     margin-right: 0;
@@ -118,11 +127,11 @@ function docPopup(code){
 }
 </script>
 </head>
-<body class="bg-slate-800">
+<body>
     <div class="page-content">
         <div class="content-wrapper">
             <div class="content d-flex justify-content-center align-items-center">
-                <form:form commandName="user" cssClass="form-validate wmin-sm-550" action="${contextName}/user/insert.do" method="post">
+                <form:form commandName="user" cssClass="form-validate wmin-sm-500" action="${contextName}/user/insert.do" method="post">
                     <div class="card mb-0">
                         <div class="card-body">
                             <div class="text-center mb-3">

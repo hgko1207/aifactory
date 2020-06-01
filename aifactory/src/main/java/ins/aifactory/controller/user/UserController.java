@@ -41,39 +41,40 @@ public class UserController extends AbstractController {
 	protected Validator validator;
 
 	@RequestMapping(value = "insert", method = RequestMethod.GET)
-	public String insertForm(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap, User entity,
-			BindingResult result) {
-		entity = new User();
+	public String insertForm(ModelMap modelMap) {
+		User entity = new User();
 		modelMap.addAttribute(entity);
 
 		return this.urlbase + "/insert";
 	}
     
 	@RequestMapping(value = "insert", method = RequestMethod.POST)
-	public void insert(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
-			@ModelAttribute User entity, BindingResult result, SessionStatus status) {
+	public void insert(HttpServletRequest request, HttpServletResponse response, @ModelAttribute User entity, BindingResult result) {
 		validator.validate(entity, result);
-		if (result.hasErrors())
+		if (result.hasErrors()) {
 			throw new ParameterValidException(result);
-		else {
+		} else {
 			if ("Y".equals(entity.getAgreeTerm())) {
 				entity.setIndvdlinfoProcessPolcyAgreYn("Y");
 				entity.setUseStplatAgreYn("Y");
 			} else {
 				throw new ParameterValidException("이용약관 및 개인정보보호방침에 동의하여 주십시오.");
 			}
+			
+			System.err.println(entity.toString());
+			System.err.println(entity.getRegister());
 
 			String passwd = entity.getUserPwd();
-			this.service.insert(entity);
-
-			// 로그인 처리
-			this.service.login(request, response, entity.getUserEmail(), passwd);
-
-			try {
-				response.sendRedirect("../");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			this.service.insert(entity);
+//
+//			// 로그인 처리
+//			this.service.login(request, response, entity.getUserEmail(), passwd);
+//
+//			try {
+//				response.sendRedirect("../");
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
     

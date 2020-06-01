@@ -5,56 +5,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta content="width=device-width, initial-scale=1" name="viewport" />
-<title>AI Factory</title>
-
-<!-- Global stylesheets -->
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/layout.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/components.min.css" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/colors.min.css" rel="stylesheet" type="text/css">
-<!-- /global stylesheets -->
-
-<link href="${contextName}/resources/css/user.css" rel="stylesheet" type="text/css">
-
-<script type="text/javascript">
-// page context 
-function contextName(){
-    return "${contextName}";
-}
-</script>
-
-<!-- Core JS files -->
-<script src="${contextName}/resources/limitless/js/main/jquery.min.js"></script>
-<script src="${contextName}/resources/limitless/js/main/bootstrap.bundle.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/loaders/blockui.min.js"></script>
-<!-- Core JS files -->
-
-<!-- Theme JS files -->
-<script src="${contextName}/resources/limitless/js/plugins/forms/validation/validate.min.js"></script>
-<script src="${contextName}/resources/limitless/js/plugins/forms/styling/uniform.min.js"></script>
-
-<script src="${contextName}/resources/limitless/js/app.js"></script>
-<!-- /theme JS files -->
-
-<script src="${contextName}/resources/js/login.js"></script>
-
-<script type="text/javascript">
-$( document ).ready(function() {
-    if( "${securityexceptionmsg}" == "Bad credentials" ){
-        alert("로그인 ID나 비밀번호가 일치하지 않습니다.");
-    } else if( "${securityexceptionmsg}".indexOf("Could not open JDBC Connection for transaction") > -1){
-        alert("데이터 베이스 연결 오류가 발생하였습니다.");
-    } else if( "${securityexceptionmsg}" != "" ){
-        alert("알 수 없는 오류가 발생하였습니다.");
-    }
-});
-</script>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+	<title>AI Factory</title>
+	
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/layout.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/components.min.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/colors.min.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+	
+	<link href="${contextName}/resources/css/user.css" rel="stylesheet" type="text/css">
+	
+	<script type="text/javascript">
+	// page context 
+	function contextName(){
+	    return "${contextName}";
+	}
+	</script>
+	
+	<!-- Core JS files -->
+	<script src="${contextName}/resources/limitless/js/main/jquery.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/main/bootstrap.bundle.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/loaders/blockui.min.js"></script>
+	<!-- Core JS files -->
+	
+	<!-- Theme JS files -->
+	<script src="${contextName}/resources/limitless/js/plugins/forms/validation/validate.min.js"></script>
+	<script src="${contextName}/resources/limitless/js/plugins/forms/styling/uniform.min.js"></script>
+	
+	<script src="${contextName}/resources/limitless/js/app.js"></script>
+	<!-- /theme JS files -->
+	
+	<script src="${contextName}/resources/js/login.js"></script>
+	
+	<script src="${contextName}/resources/js/plugins/jquery.backstretch.min.js"></script>
+	
+	<script type="text/javascript">
+	$(document).ready(function() {
+	    if ("${securityexceptionmsg}" == "Bad credentials") {
+	        alert("로그인 ID나 비밀번호가 일치하지 않습니다.");
+	    } else if ("${securityexceptionmsg}".indexOf("Could not open JDBC Connection for transaction") > -1) {
+	        alert("데이터 베이스 연결 오류가 발생하였습니다.");
+	    } else if ("${securityexceptionmsg}" != "") {
+	        alert("알 수 없는 오류가 발생하였습니다.");
+	    }
+	    
+		$.backstretch([
+	    	contextName() + "/resources/images/bg1.png",
+	    	contextName() + "/resources/images/bg2.jpg",
+	    	contextName() + "/resources/images/bg3.jpg",
+	    ], {duration: 3000, fade: 750});
+	});
+	</script>
 </head>
 <body class="bg-slate-800">
     <!-- Page content -->

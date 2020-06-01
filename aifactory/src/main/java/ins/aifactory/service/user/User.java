@@ -14,6 +14,7 @@ public class User extends EntityUser {
 	private String useStplatAgreYn;
 	private String indvdlinfoProcessPolcyAgreYn;
 	private String agreeTerm;
+	private RoleType role;
 
 	public User() {
 	}
@@ -84,5 +85,22 @@ public class User extends EntityUser {
 
 	public void setAgreeTerm(String agreeTerm) {
 		this.agreeTerm = agreeTerm;
+	}
+
+	public RoleType getRole() {
+		return role;
+	}
+
+	public void setRole(RoleType role) {
+		this.role = role;
+	}
+	
+	public enum RoleType {
+		ADMIN, BIZC, USER, RATER
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString();
 	}
 }
