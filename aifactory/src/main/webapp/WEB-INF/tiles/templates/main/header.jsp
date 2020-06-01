@@ -5,31 +5,49 @@
 
 <sec:authentication property="principal" var="user"></sec:authentication>
 
-<script>
-
-</script>
-
 <div class="page-header">
-    <!-- Main navbar -->
     <div class="navbar navbar-expand-md navbar-dark border-transparent">
-       
-        <div class="d-md-none" style="padding:0px 12px">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
-                <img src="${contextName}/resources/images/menu.png" width="20" height="15">
-            </button>
-        </div>
-        <div class="navbar-brand wmin-0 ">
+        <div class="navbar-brand wmin-0 mr-5">
             <a href="${pageContext.request.contextPath}/task/search.do" class="d-inline-block">
-                <img src="${pageContext.request.contextPath}/resources/images/logo.png" class="my-1">
+                <img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="">
             </a>
         </div>
-       
-
+        
+        <div class="d-md-none">
+			<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar-mobile" aria-expanded="false">
+				<i class="icon-tree5"></i>
+			</button>
+		</div>
       
         <div class="collapse navbar-collapse" id="navbar-mobile">
-            <a href="${contextName}/task/search.do?mode=all" style="color:white"><h1 class="header-category">태스크</h1></a>
-            <a href="${contextName}/community/search.do?mode=all" style="color:white"><h1 class="font-weight-semibold header-category">커뮤니티</h1></a>
-            <a href="${contextName}/about/search.do?mode=all" style="color:white"><h1 class="font-weight-semibold header-category">더보기</h1></a>
+        	<div class="navbar navbar-expand-md navbar-dark border-top-0">
+        		<div class="text-center d-md-none w-100">
+					<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-navigation">
+						<i class="icon-unfold mr-2"></i>
+						Navigation
+					</button>
+				</div>
+        	</div>
+        	
+        	<div class="navbar-collapse collapse" id="navbar-navigation">
+        		<ul class="navbar-nav navbar-nav-highlight">
+					<li id="task" class="nav-item">
+						<a href="${contextName}/task/search.do?mode=all" class="navbar-nav-link">
+							태스크
+						</a>
+					</li>
+					<li id="community" class="nav-item">
+						<a href="${contextName}/community/search.do?mode=all" class="navbar-nav-link">
+						 	커뮤니티
+					 	</a>
+					</li>
+					<li id="about" class="nav-item">
+						<a href="${contextName}/about/search.do?mode=all" class="navbar-nav-link">
+							더보기
+						</a>
+					</li>
+				</ul>
+        	</div>
         </div>
        
         <div class="navbar-collapse search-login-left">
@@ -62,8 +80,8 @@
                 </li>
                 <sec:authorize access="isAnonymous()">
                     <li class="nav-item ml-md-4 login-logout">
-                        <a href="${contextName}/login/login.do" class="btn bg-info">&nbsp;로그인&nbsp;</a>
-                        <a href="${contextName}/user/insert.do" class="btn bg-secondary">&nbsp;회원가입&nbsp;</a>
+                        <a href="${contextName}/login/login.do" class="btn bg-info px-3 mr-1">로그인</a>
+                        <button type="button" id="signUpBtn" class="btn bg-secondary px-3">회원가입</button>
                     </li>
                 </sec:authorize>
                 <sec:authorize access="isAuthenticated()">
@@ -74,11 +92,11 @@
 
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="javascript:openPwdChkModal();" class="dropdown-item">
-                                <i class="icon-user-plus"></i> 사용자 프로필
+                                <i class="icon-user-plus mr-2"></i>사용자 프로필
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="${contextName}/j_spring_security_logout" class="dropdown-item">
-                                <i class="icon-switch2"></i> 로그아웃
+                                <i class="icon-switch2 mr-2"></i>로그아웃
                             </a>
                         </div>
                     </li>
@@ -147,4 +165,25 @@ function chkPwd(){
         }
     });
 }
+
+$("#signUpBtn").click(function() {
+	swalInit.fire({
+        title: '회원가입 유형을 선택하세요!',
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonText: '개인회원',
+        cancelButtonText: '&nbsp;&nbsp;평가자&nbsp;&nbsp;',
+        confirmButtonClass: 'btn btn-primary',
+        cancelButtonClass: 'btn btn-success',
+        width: '30%'
+    }).then(function(result) {
+    	 if (result.value) {
+    		 console.log(111);
+    		 location.href=contextPath + "/user/insert.do?type=USER";
+    	 } else {
+    		 console.log(222);
+    		 location.href=contextPath + "/user/insert.do?type=RATER";
+    	 }
+    });
+});
 </script>

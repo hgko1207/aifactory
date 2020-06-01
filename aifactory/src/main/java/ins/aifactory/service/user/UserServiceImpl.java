@@ -44,7 +44,7 @@ import ins.core.service.InsBaseServiceImpl;
  * </pre>
  */
 @Service("UserService")
-public class UserServiceImpl extends InsBaseServiceImpl<User, UserCriterion> implements UserService{
+public class UserServiceImpl extends InsBaseServiceImpl<User, UserCriterion> implements UserService {
     
     @Resource(name = "userIdGnrService")
     private EgovIdGnrService idgenService;
@@ -81,7 +81,7 @@ public class UserServiceImpl extends InsBaseServiceImpl<User, UserCriterion> imp
 			try {
 				UserRole userRole = new UserRole();
 				userRole.setUser(entity);
-				userRole.setRole(new Role(Role.ROLE_USER));
+				userRole.setRole(new Role(entity.getRole().name()));
 				userRoleService.insert(userRole);
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -67,58 +67,58 @@ public class AutoLogInFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         
         // 운영환경이 아닐경우 
-        if( !profile.equalsIgnoreCase("prod") ){
-            boolean isAuth = false;
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            
-            if( auth != null){
-                Object principal = auth.getPrincipal();
-                
-                if( principal != null && principal instanceof LoginInfo ){
-                    isAuth = true;
-                }
-            }
-            
-            if( !isAuth ){
-                
+		if (!profile.equalsIgnoreCase("prod")) {
+			boolean isAuth = false;
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+			if (auth != null) {
+				Object principal = auth.getPrincipal();
+
+				if (principal != null && principal instanceof LoginInfo) {
+					isAuth = true;
+				}
+			}
+
+			if (!isAuth) {
                 // API Call 인 경우 JSON 포멧으로 오류  Return
                 String apiPath = ((HttpServletRequest)request).getContextPath() + "/api/";
                 String requestURI = ((HttpServletRequest)request).getRequestURI();
                 
-                if( requestURI.indexOf(apiPath) == 0 ){
-                    EntityError errorResponse = new EntityError();
-                    errorResponse.setCode(ApiConstants.CODE_ERR_NOT_LOGIN);
-                    errorResponse.setMessage("세션이 종료되었습니다.\n다시 로그인하여 주십시오.");
-           
-                    byte[] responseToSend = new ObjectMapper().writeValueAsBytes(errorResponse);
-                    ((HttpServletResponse) response).setHeader("Content-Type", "application/json");
-                    ((HttpServletResponse) response).setStatus(401);
-                    response.getOutputStream().write(responseToSend);
-                    
-                    return;
-                }
+				if (requestURI.indexOf(apiPath) == 0) {
+					EntityError errorResponse = new EntityError();
+					errorResponse.setCode(ApiConstants.CODE_ERR_NOT_LOGIN);
+					errorResponse.setMessage("세션이 종료되었습니다.\n다시 로그인하여 주십시오.");
+
+					byte[] responseToSend = new ObjectMapper().writeValueAsBytes(errorResponse);
+					((HttpServletResponse) response).setHeader("Content-Type", "application/json");
+					((HttpServletResponse) response).setStatus(401);
+					response.getOutputStream().write(responseToSend);
+
+					return;
+				}
                 
                 // 자동 로그인 활성화시 
-                if( autoLoginEnable ){
+				if (autoLoginEnable) {
+					Authentication authResult = null;
+					try {
+						authResult = attemptAuthentication((HttpServletRequest) request,
+								(HttpServletResponse) response);
+						if (authResult == null) {
+							// return immediately as subclass has indicated that
+							// it hasn't completed authentication
+							return;
+						}
+						sessionStrategy.onAuthentication(authResult, (HttpServletRequest) request,
+								(HttpServletResponse) response);
+					} catch (InternalAuthenticationServiceException failed) {
+						return;
+					} catch (AuthenticationException failed) {
+						return;
+					}
 
-                    Authentication authResult = null;
-                    try {
-                        authResult = attemptAuthentication((HttpServletRequest)request, (HttpServletResponse)response);
-                        if (authResult == null) {
-                            // return immediately as subclass has indicated that it hasn't completed authentication
-                            return;
-                        }
-                        sessionStrategy.onAuthentication(authResult, (HttpServletRequest)request, (HttpServletResponse)response);
-                    } catch(InternalAuthenticationServiceException failed) {
-                        return;
-                    }
-                    catch (AuthenticationException failed) {
-                        return;
-                    }
-                    
-                    successfulAuthentication((HttpServletRequest)request, (HttpServletResponse)response, authResult);
-                }
-            }
+					successfulAuthentication((HttpServletRequest) request, (HttpServletResponse) response, authResult);
+				}
+			}
         }
         
         chain.doFilter(request, response);
@@ -166,22 +166,22 @@ public class AutoLogInFilter extends GenericFilterBean {
         this.authenticationManager = authenticationManager;
     }
     
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-            Authentication authResult) throws IOException, ServletException {
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			Authentication authResult) throws IOException, ServletException {
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Authentication success. Updating SecurityContextHolder to contain: " + authResult);
-        }
+		if (logger.isDebugEnabled()) {
+			logger.debug("Authentication success. Updating SecurityContextHolder to contain: " + authResult);
+		}
 
-        SecurityContextHolder.getContext().setAuthentication(authResult);        
-    }
+		SecurityContextHolder.getContext().setAuthentication(authResult);
+	}
 
-    public String getProfile() {
-        return profile;
-    }
+	public String getProfile() {
+		return profile;
+	}
 
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
     
 }

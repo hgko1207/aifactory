@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import ins.aifactory.service.user.User;
+import ins.aifactory.service.user.User.RoleType;
 import ins.aifactory.service.user.UserService;
 import ins.core.entity.LoginInfo;
 import ins.core.exception.IncorrectPasswordException;
@@ -41,9 +42,9 @@ public class UserController extends AbstractController {
 	protected Validator validator;
 
 	@RequestMapping(value = "insert", method = RequestMethod.GET)
-	public String insertForm(ModelMap modelMap) {
-		User entity = new User();
-		modelMap.addAttribute(entity);
+	public String insertForm(ModelMap modelMap, RoleType type) {
+		modelMap.addAttribute(new User());
+		modelMap.addAttribute("type", type);
 
 		return this.urlbase + "/insert";
 	}
@@ -61,20 +62,17 @@ public class UserController extends AbstractController {
 				throw new ParameterValidException("이용약관 및 개인정보보호방침에 동의하여 주십시오.");
 			}
 			
-			System.err.println(entity.toString());
-			System.err.println(entity.getRegister());
-
 			String passwd = entity.getUserPwd();
-//			this.service.insert(entity);
-//
-//			// 로그인 처리
-//			this.service.login(request, response, entity.getUserEmail(), passwd);
-//
-//			try {
-//				response.sendRedirect("../");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
+			this.service.insert(entity);
+
+			// 로그인 처리
+			this.service.login(request, response, entity.getUserEmail(), passwd);
+
+			try {
+				response.sendRedirect("../");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
     

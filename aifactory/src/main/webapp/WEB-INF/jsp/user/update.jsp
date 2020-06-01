@@ -13,7 +13,7 @@
 	
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
-	<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
 	<link href="${contextName}/resources/limitless/css/icons/fontawesome/styles.min.css" rel="stylesheet" type="text/css">
 	<link href="${contextName}/resources/limitless/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="${contextName}/resources/limitless/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
@@ -45,7 +45,6 @@
 	<script src="${contextName}/resources/limitless/js/plugins/pickers/daterangepicker.js"></script>
 	<script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.js"></script>
 	<script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.date.js"></script>
-	
 	<!-- /theme JS files -->
 	
 	<script src="https://cdn.ckeditor.com/4.11.3/standard/ckeditor.js"></script>

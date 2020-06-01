@@ -7,7 +7,7 @@ var g_mode = 'all';
 var g_keyword='${postCriterion.keyword}';
 var g_pageNo = ${postCriterion.pagingInfo.pageNo};
 var g_totalPageCnt = 1;
-$( document ).ready(function() {
+$(document).ready(function() {
     $('#keyword').val('${postCriterion.keyword}');
     g_mode = '${postCriterion.mode}';
     if(g_mode == 'news'){
@@ -125,14 +125,18 @@ function detailAction(postId){
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade active show" id="highlighted-tab1">
-                    <div class="text-right" style="margin-bottom:5px;">
-                        <div class="d-inline-flex align-items-center justify-content-center">
-                            <select id="othbcYn" name="othbcYn" class="form-control">
-                                <option value="">All</option>
-                                <option value="Y">제목</option>
-                                <option value="N">내용</option>
-                            </select>
-                            <input type="text" name="keyword" id="keyword" class="form-control ml-1" placeholder="검색"/>
+                    <div class="text-right mb-2">
+                        <div class="d-inline-flex">
+                        	<div class="form-group mb-0">
+	                            <select id="othbcYn" name="othbcYn" class="form-control">
+	                                <option value="">All</option>
+	                                <option value="Y">제목</option>
+	                                <option value="N">내용</option>
+	                            </select>
+                        	</div>
+                        	<div class="form-group mb-0">
+	                            <input type="text" name="keyword" id="keyword" class="form-control ml-1" placeholder="검색"/>
+                        	</div>
                             <button id="search_button" type="button" class="btn btn-info ml-2" onclick="search();">
                                 <i class="icon-search4 mr-2"></i>검 색
                             </button>

@@ -7,7 +7,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
 
-
 <script type="text/javascript">
 var contextPath = "${pageContext.request.contextPath}";
 
@@ -15,14 +14,12 @@ var contextPath = "${pageContext.request.contextPath}";
 function contextName(){
 	return "${contextName}";
 }
-
-
 </script>
 
 <!-- Global stylesheets -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
-<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
 <link href="${contextName}/resources/limitless/css/icons/fontawesome/styles.min.css" rel="stylesheet" type="text/css">
 <link href="${contextName}/resources/limitless/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="${contextName}/resources/limitless/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
@@ -63,7 +60,6 @@ function contextName(){
 <script src="${contextName}/resources/limitless/js/plugins/pickers/daterangepicker.js"></script>
 <script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.js"></script>
 <script src="${contextName}/resources/limitless/js/plugins/pickers/pickadate/picker.date.js"></script>
-
 <!-- /theme JS files -->
 
 <script src="https://cdn.ckeditor.com/4.11.3/standard/ckeditor.js"></script>
@@ -86,9 +82,6 @@ function contextName(){
 
 <!-- favicon -->
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" type="image/x-icon" />
-
-
-
 
 
 <%-----------------------------------------------------------------------------------------

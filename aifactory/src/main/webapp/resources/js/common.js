@@ -44,26 +44,22 @@ var CommonWidget = function() {
 		}
     };
     
-    var _componentSwal = function() {
-    	/** Sweet Alerts Defaults */
-    	swal.setDefaults({
-	        buttonsStyling: false,
-	        confirmButtonClass: 'btn btn-primary',
-	        cancelButtonClass: 'btn btn-light'
-	    });
-    };
-    
 	return {
         init: function() {
         	_componentSelect2();
         	_componentForm();
-        	_componentSwal();
         }
     }
 }();
 
 document.addEventListener('DOMContentLoaded', function() {
 	CommonWidget.init();
+});
+
+var swalInit = swal.mixin({
+    buttonsStyling: false,
+    confirmButtonClass: 'btn btn-primary',
+    cancelButtonClass: 'btn btn-light'
 });
 
 /*******************************************************************************************************
@@ -173,4 +169,10 @@ document.addEventListener('DOMContentLoaded', function() {
         else
             $(this).addClass('row-selected').siblings().removeClass('row-selected');
     });
+});
+
+var swalInit = swal.mixin({
+    buttonsStyling: false,
+    confirmButtonClass: 'btn btn-primary',
+    cancelButtonClass: 'btn btn-light'
 });

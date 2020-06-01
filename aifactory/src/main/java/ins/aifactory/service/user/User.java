@@ -95,8 +95,19 @@ public class User extends EntityUser {
 		this.role = role;
 	}
 	
+	
 	public enum RoleType {
-		ADMIN, BIZC, USER, RATER
+		ADMIN("관리자"), BIZC("사업자"), USER("개인"), RATER("평가자");
+		
+		private String name;
+		
+		private RoleType(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
 	}
 	
 	@Override

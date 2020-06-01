@@ -50,7 +50,7 @@ function initSearch(){
 }
 
 function getData(){
-    if( g_pageNo == 0 || g_pageNo < g_totalPageCnt){
+    if (g_pageNo == 0 || g_pageNo < g_totalPageCnt){
         $.ajax_url({
             url:contextName()+'/leaderboard/searchAjax.do?'+makeSearchParam(), 
             success: function (data) {

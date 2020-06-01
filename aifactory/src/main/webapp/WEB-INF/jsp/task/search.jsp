@@ -134,30 +134,35 @@ function detailAction(taskId){
     <div class="card">
         <div class="card-body">
             <ul class="nav nav-tabs nav-tabs-highlight custom-font">
-                <li class="nav-item"><a id="allTap" href="${contextName}/task/search.do?mode=all" class="nav-link" >모두 보기</a></li>
+                <li class="nav-item"><a id="allTap" href="${contextName}/task/search.do?mode=all" class="nav-link">모두 보기</a></li>
                 <li class="nav-item"><a id="hostedTap" href="${contextName}/task/search.do?mode=host" class="nav-link">주최한 대회</a></li>
-                <li class="nav-item"><a  id="jointedTap" href="${contextName}/task/search.do?mode=join" class="nav-link">참가한 대회</a></li>
+                <li class="nav-item"><a id="jointedTap" href="${contextName}/task/search.do?mode=join" class="nav-link">참가한 대회</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade active show" id="highlighted-tab1">
-                    <div class="text-right" style="margin-bottom:5px;">
-                        <div class="d-inline-flex align-items-center justify-content-center">
-                            <select id="othbcYn" name="othbcYn" class="form-control">
-                                <option value="">All</option>
-                                <option value="Y">Public</option>
-                                <option value="N">Private</option>
-                            </select>
-                            <input type="text" name="keyword" id="keyword" class="form-control ml-1" placeholder="검색"/>
-                            <button id="search_button" type="button" class="btn btn-info ml-2" onclick="search();">
-                                <i class="icon-search4 mr-2"></i>검 색
-                            </button>
-                            <sec:authorize access="hasAnyRole('ROLE_BIZC','ROLE_ADMN')">
-                                <a href="${pageContext.request.contextPath}/task/insert.do" class="btn btn-info ml-3">
-                                    <i class="icon-pencil7 mr-2"></i>Create Task
-                                </a>
-                            </sec:authorize>
-                         </div>
-                    </div>
+                	<div class="text-right mb-2">
+	                	<div class="d-inline-flex">
+	                    	<div class="form-group mb-0">
+	                    		<select id="othbcYn" name="othbcYn" class="form-control">
+		                        	<option value="">All</option>
+		                           	<option value="Y">Public</option>
+		                           	<option value="N">Private</option>
+		                        </select>
+	                    	</div>
+	                      
+	                      	<div class="form-group mb-0">
+	                       		<input type="text" name="keyword" id="keyword" class="form-control ml-1" placeholder="검색"/>
+	                    	</div>
+	                       	<button id="search_button" type="button" class="btn btn-info ml-2" onclick="search();">
+	                       		<i class="icon-search4 mr-2"></i>검 색
+	                       	</button>
+	                       	<sec:authorize access="hasAnyRole('ROLE_BIZC','ROLE_ADMN')">
+	                        	<a href="${pageContext.request.contextPath}/task/insert.do" class="btn btn-info ml-3">
+	                            	<i class="icon-pencil7 mr-2"></i>Create Task
+	                           	</a>
+	                       	</sec:authorize>
+	                    </div>
+                	</div>
                     <div class="p-3 font-size-16" style="background-color:#273246;color:white;">
                         <span class="pl-2" id="taskCnt"></span>
                     </div>

@@ -5,7 +5,6 @@
  * ---------------------------------------------------------------------------- */
 
 var LoginValidation = function() {
-
     // Uniform
     var _componentUniform = function() {
         if (!$().uniform) {
@@ -97,6 +96,35 @@ var LoginValidation = function() {
     }
 }();
 
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
     LoginValidation.init();
+    
+    var swalInit = swal.mixin({});
+    
+    $("#signUpBtn").click(function() {
+    	swalInit.fire({
+            title: '회원가입 유형을 선택하세요!',
+            type: 'info',
+            showCancelButton: true,
+            confirmButtonText: '개인회원',
+            cancelButtonText: '&nbsp;&nbsp;평가자&nbsp;&nbsp;',
+            confirmButtonClass: 'btn btn-primary',
+            cancelButtonClass: 'btn btn-success',
+            width: '30%'
+        }).then(function(result) {
+        	 if (result.value) {
+        		 console.log(111);
+        		 location.href=contextPath + "/user/insert.do?type=USER";
+        	 } else {
+        		 console.log(222);
+        		 location.href=contextPath + "/user/insert.do?type=RATER";
+        	 }
+        });
+    });
+    
+	$.backstretch([
+    	contextPath + "/resources/images/bg1.png",
+    	contextPath + "/resources/images/bg2.jpg",
+    	contextPath + "/resources/images/bg3.jpg",
+    ], {duration: 3000, fade: 750});
 });

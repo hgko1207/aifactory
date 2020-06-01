@@ -12,7 +12,7 @@
 	
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
-	<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="${contextName}/resources/limitless/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
 	<link href="${contextName}/resources/limitless/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="${contextName}/resources/limitless/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
 	<link href="${contextName}/resources/limitless/css/layout.min.css" rel="stylesheet" type="text/css">
@@ -136,7 +136,7 @@ function docPopup(code){
                         <div class="card-body">
                             <div class="text-center mb-3">
                                 <i class="icon-plus3 icon-2x text-success border-success border-3 rounded-round p-3 mb-3 mt-1"></i>
-                                <h3 class="mb-0">회원가입</h3>
+                                <h3 class="mb-0">${type.name} 회원가입</h3>
                                 <span class="d-block text-muted">모든 항목을 채워야합니다</span>
                             </div>
                             <div class="form-group text-center text-muted content-divider">
@@ -198,6 +198,8 @@ function docPopup(code){
                             <div class="form-group text-center text-muted content-divider">
                                 <span class="px-2"></span>
                             </div>
+                            
+                            <input type="hidden" value="${type}" name="role">
 
                             <button type="submit" class="btn bg-dark btn-block">회원 등록<i class="icon-circle-right2 ml-2"></i></button>
 
