@@ -34,7 +34,9 @@ public class CustomJdbcDaoImpl extends JdbcDaoImpl {
         }
         
         LoginInfo user = (LoginInfo) users.get(0);    // contains no GrantedAuthority[]
+        System.err.println(user.getEmail());
         Set<GrantedAuthority> dbAuthSet = new HashSet<GrantedAuthority>();
+        System.err.println(getEnableAuthorities());
 		if (getEnableAuthorities()) {
 			dbAuthSet.addAll(loadUserAuthorities(user.getUsername()));
 		}

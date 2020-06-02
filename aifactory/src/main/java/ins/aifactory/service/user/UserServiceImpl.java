@@ -77,6 +77,7 @@ public class UserServiceImpl extends InsBaseServiceImpl<User, UserCriterion> imp
 
 			dao.insert(domainClass.getName() + ".insert", entity);
 
+			System.err.println(entity.getRole().name());
 			// ROLE 등록
 			try {
 				UserRole userRole = new UserRole();
@@ -111,14 +112,13 @@ public class UserServiceImpl extends InsBaseServiceImpl<User, UserCriterion> imp
 	}
     
     @Override
-    public void login(HttpServletRequest request, HttpServletResponse response, String userEmail, String userPwd){
+    public void login(HttpServletRequest request, HttpServletResponse response, String userEmail, String userPwd) {
         // 로그인 처리
 		boolean isAuth = false;
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		if (auth != null) {
 			Object principal = auth.getPrincipal();
-
 			if (principal != null && principal instanceof LoginInfo) {
 				isAuth = true;
 			}
@@ -127,11 +127,11 @@ public class UserServiceImpl extends InsBaseServiceImpl<User, UserCriterion> imp
 		if (!isAuth) {
 			Authentication authResult = null;
             try {
-                AuthenticationDetailsSource<HttpServletRequest,?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
-                SessionAuthenticationStrategy sessionStrategy = new NullAuthenticatedSessionStrategy();
-                UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(userEmail,userPwd);
-                authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
-                authResult = authenticationManager.authenticate(authRequest);
+				AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
+				SessionAuthenticationStrategy sessionStrategy = new NullAuthenticatedSessionStrategy();
+                UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(userEmail, userPwd);
+				authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
+				authResult = authenticationManager.authenticate(authRequest);
                 
                 if (authResult == null) {
                     // return immediately as subclass has indicated that it hasn't completed authentication
@@ -152,10 +152,10 @@ public class UserServiceImpl extends InsBaseServiceImpl<User, UserCriterion> imp
         }
     }
 
-    @Override
-    public String getPwd(User entity) {
-        String pwd = dao.selectOne(domainClass.getName()+".getPwd", entity);
-        return pwd;
-    }
+	@Override
+	public String getPwd(User entity) {
+		String pwd = dao.selectOne(domainClass.getName() + ".getPwd", entity);
+		return pwd;
+	}
 
 }

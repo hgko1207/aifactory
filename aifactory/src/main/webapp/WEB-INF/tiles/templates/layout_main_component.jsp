@@ -10,11 +10,13 @@
 
 <body>
     <tiles:insertAttribute name="header" />
+    
     <div class="page-content">
         <div class="content-wrapper">
             <tiles:insertAttribute name="body-middle" />
         </div>
     </div>
+    
     <tiles:insertAttribute name="footer" />
 </body>
 </html>

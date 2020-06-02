@@ -7,50 +7,39 @@
 
 <div class="page-header">
     <div class="navbar navbar-expand-md navbar-dark border-transparent">
+    	<div class="d-md-none" style="padding:0px 12px">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile" aria-expanded="true">
+                <i class="icon-paragraph-justify3"></i>
+            </button>
+        </div>
+		
         <div class="navbar-brand wmin-0 mr-5">
             <a href="${pageContext.request.contextPath}/task/search.do" class="d-inline-block">
                 <img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="">
             </a>
         </div>
-        
-        <div class="d-md-none">
-			<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar-mobile" aria-expanded="false">
-				<i class="icon-tree5"></i>
-			</button>
-		</div>
       
         <div class="collapse navbar-collapse" id="navbar-mobile">
-        	<div class="navbar navbar-expand-md navbar-dark border-top-0">
-        		<div class="text-center d-md-none w-100">
-					<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-navigation">
-						<i class="icon-unfold mr-2"></i>
-						Navigation
-					</button>
-				</div>
-        	</div>
-        	
-        	<div class="navbar-collapse collapse" id="navbar-navigation">
-        		<ul class="navbar-nav navbar-nav-highlight">
-					<li id="task" class="nav-item">
-						<a href="${contextName}/task/search.do?mode=all" class="navbar-nav-link">
-							태스크
-						</a>
-					</li>
-					<li id="community" class="nav-item">
-						<a href="${contextName}/community/search.do?mode=all" class="navbar-nav-link">
-						 	커뮤니티
-					 	</a>
-					</li>
-					<li id="about" class="nav-item">
-						<a href="${contextName}/about/search.do?mode=all" class="navbar-nav-link">
-							더보기
-						</a>
-					</li>
-				</ul>
-        	</div>
+        	<ul class="navbar-nav navbar-nav-highlight">
+				<li id="task" class="nav-item">
+					<a href="${contextName}/task/search.do?mode=all" class="navbar-nav-link">
+						<span class="font-weight-bold px-1">태스크</span>
+					</a>
+				</li>
+				<li id="community" class="nav-item">
+					<a href="${contextName}/community/search.do?mode=all" class="navbar-nav-link">
+					 	<span class="font-weight-bold px-1">커뮤니티</span>
+				 	</a>
+				</li>
+				<li id="about" class="nav-item">
+					<a href="${contextName}/about/search.do?mode=all" class="navbar-nav-link">
+						<span class="font-weight-bold px-1">더보기</span>
+					</a>
+				</li>
+			</ul>
         </div>
        
-        <div class="navbar-collapse search-login-left">
+        <div class="navbar-collapse search-login-left"> 
 <!--             <ul class="navbar-nav navbar-nav-highlight"> -->
 <!--                 <li id="main" class="nav-item"> -->
 <%--                     <a href="${pageContext.request.contextPath}/task/search.do" class="navbar-nav-link"> --%>  
@@ -121,7 +110,7 @@
                     <input type="hidden" name="userPwd" />
                     <div class="d-inline-flex" style="width: 100%">
                         <div class="col-3">
-                            <label>Password</label>
+                            <label class="form-control">Password</label>
                         </div>
                         <div class="form-group col-9 form-group-feedback input-group">
                             <input name="pwd" id="pwd" type="password" class="form-control" />

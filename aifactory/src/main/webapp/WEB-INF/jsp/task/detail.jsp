@@ -9,7 +9,7 @@
 <script src="${contextName}/resources/js/lap.js"></script>
 
 <script>
-$( document ).ready(function() {
+$(document).ready(function() {
     new tui.Editor({
         el: document.querySelector('#taskDc'),
         height: '450px',
@@ -61,9 +61,9 @@ function addLapRow(goalScre, lapEndDttm, chkPnttmCycle, totalRank, totalPoint){
 
 // Select Lap Row
 function selectLapRow(ele){
-    if($(ele).hasClass("row-selected")){
+    if ($(ele).hasClass("row-selected")){
         $(ele).removeClass('row-selected');
-    }else{
+    } else {
         $(ele).addClass('row-selected').siblings().removeClass('row-selected');
     }
     
