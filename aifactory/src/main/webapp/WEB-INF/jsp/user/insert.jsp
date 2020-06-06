@@ -131,7 +131,7 @@ function docPopup(code){
     <div class="page-content">
         <div class="content-wrapper">
             <div class="content d-flex justify-content-center align-items-center">
-                <form:form commandName="user" cssClass="form-validate wmin-sm-500" action="${contextName}/user/insert.do" method="post">
+                <form:form commandName="user" cssClass="form-validate login-form" action="${contextName}/user/insert.do" method="post">
                     <div class="card mb-0">
                         <div class="card-body">
                             <div class="text-center mb-3">

@@ -99,27 +99,16 @@ var LoginValidation = function() {
 $(document).ready(function() {
     LoginValidation.init();
     
-    var swalInit = swal.mixin({});
-    
     $("#signUpBtn").click(function() {
-    	swalInit.fire({
-            title: '회원가입 유형을 선택하세요!',
-            type: 'info',
-            showCancelButton: true,
-            confirmButtonText: '개인회원',
-            cancelButtonText: '&nbsp;&nbsp;평가자&nbsp;&nbsp;',
-            confirmButtonClass: 'btn btn-primary',
-            cancelButtonClass: 'btn btn-success',
-            width: '30%'
-        }).then(function(result) {
-        	 if (result.value) {
-        		 console.log(111);
-        		 location.href=contextPath + "/user/insert.do?type=USER";
-        	 } else {
-        		 console.log(222);
-        		 location.href=contextPath + "/user/insert.do?type=RATER";
-        	 }
-        });
+    	$('#singupModal').modal();
+    });
+
+    $('#userSignupBtn').click(function() {
+    	 location.href=contextPath + "/user/insert.do?type=USER";
+    });
+
+    $('#raterSignupBtn').click(function() {
+    	 location.href=contextPath + "/user/insert.do?type=RATER";
     });
     
 	$.backstretch([

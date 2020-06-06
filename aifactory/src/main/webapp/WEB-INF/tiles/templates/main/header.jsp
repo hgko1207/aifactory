@@ -126,6 +126,22 @@
     </div>
 </div>
 
+<div id="singupModal" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><i class="icon-user mr-2"></i>회원가입 유형을 선택하세요!</h5>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+		
+			<div class="modal-body form-inline justify-content-center">
+				<button type="button" id="userSignupBtn" class="btn bg-primary mr-3">개인 회원가입</button>
+				<button type="button" id="raterSignupBtn" class="btn bg-info">평가자 회원가입</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 var pathName = this.location.pathname;
 var menuName = pathName.split("/")[2];
@@ -143,6 +159,7 @@ function closePwdChkModal(){
     $('#frmPwdChk')[0].reset();
     $('#pwdChkModal').modal('hide');
 }
+
 function chkPwd(){
     $.ajax_form({
         url:'<c:url value="/user/chkPwd.do" />',
@@ -156,23 +173,14 @@ function chkPwd(){
 }
 
 $("#signUpBtn").click(function() {
-	swalInit.fire({
-        title: '회원가입 유형을 선택하세요!',
-        type: 'info',
-        showCancelButton: true,
-        confirmButtonText: '개인회원',
-        cancelButtonText: '&nbsp;&nbsp;평가자&nbsp;&nbsp;',
-        confirmButtonClass: 'btn btn-primary',
-        cancelButtonClass: 'btn btn-success',
-        width: '30%'
-    }).then(function(result) {
-    	 if (result.value) {
-    		 console.log(111);
-    		 location.href=contextPath + "/user/insert.do?type=USER";
-    	 } else {
-    		 console.log(222);
-    		 location.href=contextPath + "/user/insert.do?type=RATER";
-    	 }
-    });
+	$('#singupModal').modal();
+});
+
+$('#userSignupBtn').click(function() {
+	 location.href=contextPath + "/user/insert.do?type=USER";
+});
+
+$('#raterSignupBtn').click(function() {
+	 location.href=contextPath + "/user/insert.do?type=RATER";
 });
 </script>

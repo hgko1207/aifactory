@@ -56,8 +56,7 @@
     <div class="page-content">
         <div class="content-wrapper">
             <div class="content d-flex justify-content-center align-items-center">
-                <!-- Login form -->
-                <form class="form-validate wmin-sm-400" action="${contextName}/j_spring_security_check" method="POST">
+                <form class="form-validate login-form" action="${contextName}/j_spring_security_check" method="POST">
                     <div class="card mb-0">
                         <div class="card-body">
                             <div class="text-center mb-3">
@@ -113,5 +112,21 @@
             </div>
         </div>
     </div>
+    
+    <div id="singupModal" class="modal fade" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title"><i class="icon-user mr-2"></i>회원가입 유형을 선택하세요!</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+			
+				<div class="modal-body form-inline justify-content-center">
+					<button type="button" id="userSignupBtn" class="btn bg-primary mr-3">개인 회원가입</button>
+					<button type="button" id="raterSignupBtn" class="btn bg-info">평가자 회원가입</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

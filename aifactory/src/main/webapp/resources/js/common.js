@@ -170,9 +170,3 @@ document.addEventListener('DOMContentLoaded', function() {
             $(this).addClass('row-selected').siblings().removeClass('row-selected');
     });
 });
-
-var swalInit = swal.mixin({
-    buttonsStyling: false,
-    confirmButtonClass: 'btn btn-primary',
-    cancelButtonClass: 'btn btn-light'
-});

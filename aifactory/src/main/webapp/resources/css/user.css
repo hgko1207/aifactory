@@ -1,8 +1,12 @@
 @charset "EUC-KR";
 
-.login-cover {
-    background: url(../images/login_cover.jpg) no-repeat;
-    background-size: cover;
+@media ( min-width : 576px) {
+	.login-form {
+		width: 28rem;
+	}
 }
 
-
+.modal-header {
+	padding: 1.25rem !important;
+	border-bottom: 1px solid rgba(0, 0, 0, .125) !important;
+}
